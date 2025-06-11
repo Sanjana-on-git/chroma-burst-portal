@@ -11,7 +11,8 @@ const Index = () => {
       emoji: "📬",
       bgClass: "bg-gradient-to-br from-blue-100 to-blue-200",
       textColorClass: "text-blue-900",
-      delay: 100
+      delay: 100,
+      navigateTo: "/news-notifications"
     },
     {
       title: "Events Calendar",
@@ -19,7 +20,8 @@ const Index = () => {
       emoji: "📅",
       bgClass: "bg-gradient-to-br from-red-100 to-red-200",
       textColorClass: "text-red-900",
-      delay: 200
+      delay: 200,
+      navigateTo: "/events-calendar"
     },
     {
       title: "Photo Gallery",
@@ -27,7 +29,8 @@ const Index = () => {
       emoji: "📷",
       bgClass: "bg-gradient-to-br from-green-100 to-green-200",
       textColorClass: "text-green-900",
-      delay: 300
+      delay: 300,
+      navigateTo: "/photo-gallery"
     },
     {
       title: "Media Coverage",
@@ -35,7 +38,8 @@ const Index = () => {
       emoji: "📰",
       bgClass: "bg-gradient-to-br from-purple-100 to-indigo-200",
       textColorClass: "text-purple-900",
-      delay: 400
+      delay: 400,
+      navigateTo: "/media-coverage"
     },
     {
       title: "Student Achievements",
@@ -43,7 +47,8 @@ const Index = () => {
       emoji: "🏆",
       bgClass: "bg-gradient-to-br from-yellow-100 to-orange-200",
       textColorClass: "text-orange-900",
-      delay: 500
+      delay: 500,
+      navigateTo: "/student-achievements"
     },
     {
       title: "Faculty & Research Highlights",
@@ -51,7 +56,8 @@ const Index = () => {
       emoji: "🔬",
       bgClass: "bg-gradient-to-br from-teal-100 to-cyan-200",
       textColorClass: "text-teal-900",
-      delay: 600
+      delay: 600,
+      navigateTo: "/faculty-research"
     }
   ];
 
@@ -72,6 +78,7 @@ const Index = () => {
               bgClass={announcement.bgClass}
               textColorClass={announcement.textColorClass}
               delay={announcement.delay}
+              navigateTo={announcement.navigateTo}
             />
           ))}
         </div>

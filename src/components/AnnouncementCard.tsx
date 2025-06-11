@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface AnnouncementCardProps {
@@ -9,6 +10,7 @@ interface AnnouncementCardProps {
   bgClass: string;
   textColorClass?: string;
   delay?: number;
+  navigateTo: string;
 }
 
 const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
@@ -17,12 +19,20 @@ const AnnouncementCard: React.FC<AnnouncementCardProps> = ({
   emoji,
   bgClass,
   textColorClass = "text-gray-800",
-  delay = 0
+  delay = 0,
+  navigateTo
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(navigateTo);
+  };
+
   return (
     <Card 
       className={`${bgClass} transition-all duration-300 hover:scale-105 hover:shadow-xl group cursor-pointer animate-slide-in border-0 overflow-hidden relative`}
       style={{ animationDelay: `${delay}ms` }}
+      onClick={handleClick}
     >
       <div className="absolute top-0 right-0 w-20 h-20 opacity-10 transform rotate-12 translate-x-6 -translate-y-6">
         <div className="text-6xl">{emoji}</div>
