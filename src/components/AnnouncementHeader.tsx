@@ -4,32 +4,25 @@ import { Bell } from 'lucide-react';
 
 const AnnouncementHeader: React.FC = () => {
   return (
-    <header className="relative overflow-hidden">
-      {/* Main gradient background */}
-      <div className="bg-gradient-to-r from-red-400 via-green-400 to-blue-500 py-16 px-6">
-        {/* Decorative elements */}
-        <div className="absolute top-4 left-4 w-20 h-20 bg-white bg-opacity-10 rounded-full animate-float"></div>
-        <div className="absolute bottom-4 right-4 w-16 h-16 bg-white bg-opacity-10 rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/4 w-12 h-12 bg-white bg-opacity-10 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
-        
-        {/* Content */}
-        <div className="max-w-6xl mx-auto text-center relative z-10">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <Bell className="text-white text-4xl animate-glow" size={40} />
-            <h1 className="text-5xl md:text-6xl font-bold font-poppins text-white drop-shadow-lg">
-              📢 Announcements
-            </h1>
+    <header className="relative overflow-hidden bg-white">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-red-600/10 to-green-600/10"></div>
+      
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-20">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-6 shadow-lg">
+            <Bell className="text-white" size={28} />
           </div>
           
-          <div className="w-24 h-1 bg-white bg-opacity-50 mx-auto rounded-full mb-4"></div>
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent mb-4">
+            Announcements
+          </h1>
           
-          <p className="text-xl text-white text-opacity-90 font-poppins font-light max-w-2xl mx-auto">
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6"></div>
+          
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
             Stay connected with the latest updates, events, and highlights from our institution
           </p>
         </div>
-        
-        {/* Bottom wave decoration */}
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-r from-red-400 via-green-400 to-blue-500 transform skew-y-1"></div>
       </div>
     </header>
   );

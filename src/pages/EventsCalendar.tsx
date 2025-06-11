@@ -8,102 +8,97 @@ const EventsCalendar = () => {
   const events = [
     {
       title: "Annual Convocation Ceremony",
-      description: "Graduation ceremony for the Class of 2024. Families and friends welcome.",
-      date: "2024-02-15",
+      description: "Graduation ceremony celebrating the achievements of our Class of 2024 graduates.",
+      date: "Feb 15, 2024",
       time: "10:00 AM",
       location: "Main Auditorium",
-      type: "academic",
-      icon: Users
+      type: "Academic",
+      attendees: "500+"
     },
     {
-      title: "Tech Symposium 2024",
-      description: "Student presentations on cutting-edge technology and innovation projects.",
-      date: "2024-02-20",
+      title: "Tech Innovation Symposium",
+      description: "Student presentations showcasing cutting-edge technology projects and research innovations.",
+      date: "Feb 20, 2024",
       time: "2:00 PM",
       location: "Engineering Block",
-      type: "academic",
-      icon: Calendar
+      type: "Academic",
+      attendees: "200+"
     },
     {
-      title: "Cultural Festival",
-      description: "Three-day celebration featuring music, dance, art exhibitions, and food stalls.",
-      date: "2024-03-01",
-      time: "6:00 PM",
+      title: "Spring Cultural Festival",
+      description: "Three-day celebration featuring music, dance, art exhibitions, and international food stalls.",
+      date: "Mar 1-3, 2024",
+      time: "6:00 PM onwards",
       location: "Campus Grounds",
-      type: "cultural",
-      icon: Users
+      type: "Cultural",
+      attendees: "1000+"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 font-poppins">
-      {/* Header */}
-      <header className="relative overflow-hidden">
-        <div className="bg-gradient-to-r from-red-400 via-red-500 to-red-600 py-16 px-6">
-          <div className="max-w-6xl mx-auto">
-            <Link to="/" className="inline-flex items-center gap-2 text-white hover:text-red-100 transition-colors mb-6">
-              <ArrowLeft size={20} />
-              <span>Back to Announcements</span>
-            </Link>
-            
-            <div className="flex items-center gap-4 mb-4">
-              <Calendar className="text-white text-4xl animate-glow" size={40} />
-              <h1 className="text-5xl md:text-6xl font-bold font-poppins text-white drop-shadow-lg">
-                📅 Events Calendar
-              </h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-red-50/30">
+      <header className="bg-white border-b border-gray-200/50 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto px-6 py-8">
+          <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors mb-6 text-sm font-medium">
+            <ArrowLeft size={16} />
+            Back to Announcements
+          </Link>
+          
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center">
+              <span className="text-white text-2xl">📅</span>
             </div>
-            
-            <p className="text-xl text-white text-opacity-90 font-poppins font-light max-w-2xl">
-              Academic, cultural, and administrative events - never miss important dates
-            </p>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-1">Events Calendar</h1>
+              <p className="text-gray-600">Academic, cultural, and administrative events</p>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Content */}
       <main className="max-w-4xl mx-auto px-6 py-12">
-        <div className="space-y-6">
-          {events.map((event, index) => {
-            const IconComponent = event.icon;
-            return (
-              <Card 
-                key={index} 
-                className="bg-gradient-to-br from-red-50 to-red-100 border-0 hover:scale-105 transition-all duration-300 hover:shadow-xl"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-red-500 text-white rounded-full">
-                      <IconComponent size={24} />
+        <div className="space-y-4">
+          {events.map((event, index) => (
+            <Card 
+              key={index} 
+              className="bg-white/80 border border-gray-200/50 hover:shadow-md transition-all duration-200 backdrop-blur-sm"
+            >
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Calendar className="text-red-600" size={20} />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">{event.title}</h3>
+                      <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full">
+                        {event.type}
+                      </span>
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-xl font-semibold text-red-900">{event.title}</h3>
-                        <span className="text-sm text-red-600 bg-red-200 px-2 py-1 rounded-full">
-                          {event.type}
-                        </span>
+                    <p className="text-gray-700 mb-4 leading-relaxed">{event.description}</p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <Calendar size={14} className="text-red-500" />
+                        <span>{event.date}</span>
                       </div>
-                      <p className="text-red-800 mb-3">{event.description}</p>
-                      <div className="flex flex-wrap gap-4 text-sm text-red-700">
-                        <div className="flex items-center gap-1">
-                          <Calendar size={16} />
-                          <span>{event.date}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock size={16} />
-                          <span>{event.time}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <MapPin size={16} />
-                          <span>{event.location}</span>
-                        </div>
+                      <div className="flex items-center gap-2">
+                        <Clock size={14} className="text-red-500" />
+                        <span>{event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin size={14} className="text-red-500" />
+                        <span>{event.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Users size={14} className="text-red-500" />
+                        <span>{event.attendees}</span>
                       </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </main>
     </div>

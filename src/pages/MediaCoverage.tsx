@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Newspaper, ExternalLink, Calendar } from 'lucide-react';
+import { ArrowLeft, Newspaper, ExternalLink, Calendar, Award } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const MediaCoverage = () => {
@@ -9,85 +9,86 @@ const MediaCoverage = () => {
     {
       title: "Institution Wins National Excellence Award",
       publication: "Education Today Magazine",
-      description: "Recognition for outstanding academic programs and student achievements in technology innovation.",
-      date: "2024-01-10",
-      type: "award",
-      link: "#"
+      description: "Recognition for outstanding academic programs and innovative student achievement initiatives in technology education.",
+      date: "Jan 10, 2024",
+      type: "Award",
+      readTime: "3 min read"
     },
     {
       title: "Research Breakthrough in Renewable Energy",
       publication: "Science Daily",
-      description: "Faculty research team develops new solar panel technology with 40% improved efficiency.",
-      date: "2024-01-05",
-      type: "research",
-      link: "#"
+      description: "Faculty research team develops new solar panel technology with 40% improved efficiency using advanced materials.",
+      date: "Jan 5, 2024",
+      type: "Research",
+      readTime: "5 min read"
     },
     {
       title: "Student Startup Featured in Tech Weekly",
       publication: "Tech Weekly",
-      description: "Alumni-founded company raises $2M in Series A funding for AI-powered education platform.",
-      date: "2023-12-28",
-      type: "startup",
-      link: "#"
+      description: "Alumni-founded company raises $2M in Series A funding for AI-powered educational platform development.",
+      date: "Dec 28, 2023",
+      type: "Innovation",
+      readTime: "4 min read"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 font-poppins">
-      {/* Header */}
-      <header className="relative overflow-hidden">
-        <div className="bg-gradient-to-r from-purple-400 via-indigo-500 to-blue-600 py-16 px-6">
-          <div className="max-w-6xl mx-auto">
-            <Link to="/" className="inline-flex items-center gap-2 text-white hover:text-purple-100 transition-colors mb-6">
-              <ArrowLeft size={20} />
-              <span>Back to Announcements</span>
-            </Link>
-            
-            <div className="flex items-center gap-4 mb-4">
-              <Newspaper className="text-white text-4xl animate-glow" size={40} />
-              <h1 className="text-5xl md:text-6xl font-bold font-poppins text-white drop-shadow-lg">
-                📰 Media Coverage
-              </h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50/30">
+      <header className="bg-white border-b border-gray-200/50 backdrop-blur-sm">
+        <div className="max-w-4xl mx-auto px-6 py-8">
+          <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-colors mb-6 text-sm font-medium">
+            <ArrowLeft size={16} />
+            Back to Announcements
+          </Link>
+          
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <span className="text-white text-2xl">📰</span>
             </div>
-            
-            <p className="text-xl text-white text-opacity-90 font-poppins font-light max-w-2xl">
-              Articles, press releases, and external mentions showcasing our institutional presence
-            </p>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-1">Media Coverage</h1>
+              <p className="text-gray-600">External recognition and press coverage</p>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Content */}
       <main className="max-w-4xl mx-auto px-6 py-12">
-        <div className="space-y-6">
+        <div className="space-y-4">
           {mediaItems.map((item, index) => (
             <Card 
               key={index} 
-              className="bg-gradient-to-br from-purple-50 to-indigo-100 border-0 hover:scale-105 transition-all duration-300 hover:shadow-xl"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="bg-white/80 border border-gray-200/50 hover:shadow-md transition-all duration-200 backdrop-blur-sm group"
             >
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-purple-500 text-white rounded-full">
-                    <Newspaper size={24} />
+                  <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Newspaper className="text-purple-600" size={20} />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xl font-semibold text-purple-900">{item.title}</h3>
-                      <span className="text-sm text-purple-600 bg-purple-200 px-2 py-1 rounded-full">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-700 transition-colors">
+                        {item.title}
+                      </h3>
+                      <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full">
                         {item.type}
                       </span>
                     </div>
-                    <p className="text-sm text-purple-700 font-medium mb-2">{item.publication}</p>
-                    <p className="text-purple-800 mb-3">{item.description}</p>
+                    
+                    <p className="text-sm font-medium text-purple-600 mb-2">{item.publication}</p>
+                    <p className="text-gray-700 mb-4 leading-relaxed">{item.description}</p>
+                    
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1 text-sm text-purple-700">
-                        <Calendar size={16} />
-                        <span>{item.date}</span>
+                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                        <div className="flex items-center gap-1">
+                          <Calendar size={14} className="text-purple-500" />
+                          <span>{item.date}</span>
+                        </div>
+                        <span>{item.readTime}</span>
                       </div>
-                      <button className="flex items-center gap-1 text-purple-600 hover:text-purple-800 text-sm">
-                        <ExternalLink size={16} />
+                      <button className="flex items-center gap-1 text-purple-600 hover:text-purple-800 text-sm font-medium transition-colors">
                         <span>Read Article</span>
+                        <ExternalLink size={14} />
                       </button>
                     </div>
                   </div>
