@@ -1,100 +1,168 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Newspaper, ExternalLink, Calendar, Award } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { ArrowLeft, Newspaper, ExternalLink, Calendar, Eye, ArrowUpRight } from 'lucide-react';
 
 const MediaCoverage = () => {
   const mediaItems = [
     {
       title: "Institution Wins National Excellence Award",
       publication: "Education Today Magazine",
-      description: "Recognition for outstanding academic programs and innovative student achievement initiatives in technology education.",
+      description: "Recognition for outstanding academic programs and innovative student achievement initiatives in technology education that have set new standards in the industry.",
       date: "Jan 10, 2024",
       type: "Award",
-      readTime: "3 min read"
+      readTime: "3 min read",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop",
+      featured: true
     },
     {
       title: "Research Breakthrough in Renewable Energy",
       publication: "Science Daily",
-      description: "Faculty research team develops new solar panel technology with 40% improved efficiency using advanced materials.",
+      description: "Faculty research team develops new solar panel technology with 40% improved efficiency using advanced materials and innovative manufacturing processes.",
       date: "Jan 5, 2024",
       type: "Research",
-      readTime: "5 min read"
+      readTime: "5 min read",
+      image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400&h=250&fit=crop",
+      featured: true
     },
     {
       title: "Student Startup Featured in Tech Weekly",
       publication: "Tech Weekly",
-      description: "Alumni-founded company raises $2M in Series A funding for AI-powered educational platform development.",
+      description: "Alumni-founded company raises $2M in Series A funding for AI-powered educational platform development that revolutionizes online learning.",
       date: "Dec 28, 2023",
       type: "Innovation",
-      readTime: "4 min read"
+      readTime: "4 min read",
+      image: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=400&h=250&fit=crop",
+      featured: false
+    },
+    {
+      title: "Campus Sustainability Initiative",
+      publication: "Environmental Journal",
+      description: "University's carbon-neutral goal achieves 60% reduction in emissions through innovative green technology and student-led conservation programs.",
+      date: "Dec 20, 2023",
+      type: "Environment",
+      readTime: "6 min read",
+      image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=250&fit=crop",
+      featured: false
+    },
+    {
+      title: "AI Ethics Program Recognition",
+      publication: "Computer Science Today",
+      description: "Institution's pioneering AI ethics curriculum receives international recognition and becomes model for universities worldwide.",
+      date: "Dec 15, 2023",
+      type: "Technology",
+      readTime: "4 min read",
+      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=250&fit=crop",
+      featured: true
+    },
+    {
+      title: "Medical Research Collaboration",
+      publication: "Health Sciences Review",
+      description: "Cross-institutional partnership leads to breakthrough in gene therapy research with potential applications in rare disease treatment.",
+      date: "Dec 10, 2023",
+      type: "Medical",
+      readTime: "7 min read",
+      image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=250&fit=crop",
+      featured: false
     }
   ];
 
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'Award': return 'from-yellow-400 to-orange-400';
+      case 'Research': return 'from-blue-400 to-cyan-400';
+      case 'Innovation': return 'from-purple-400 to-pink-400';
+      case 'Environment': return 'from-green-400 to-emerald-400';
+      case 'Technology': return 'from-indigo-400 to-blue-400';
+      case 'Medical': return 'from-red-400 to-rose-400';
+      default: return 'from-gray-400 to-slate-400';
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50/30">
-      <header className="bg-white border-b border-gray-200/50 backdrop-blur-sm">
-        <div className="max-w-4xl mx-auto px-6 py-8">
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-colors mb-6 text-sm font-medium">
-            <ArrowLeft size={16} />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/30 to-pink-50/20">
+      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-colors mb-4 text-sm font-medium group">
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
             Back to Announcements
           </Link>
           
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <span className="text-white text-2xl">📰</span>
+            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+              <Newspaper className="text-white" size={24} />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-1">Media Coverage</h1>
-              <p className="text-gray-600">External recognition and press coverage</p>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Media Coverage
+              </h1>
+              <p className="text-gray-600 mt-1">External recognition and press coverage</p>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-12">
-        <div className="space-y-4">
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {mediaItems.map((item, index) => (
-            <Card 
+            <article 
               key={index} 
-              className="bg-white/80 border border-gray-200/50 hover:shadow-md transition-all duration-200 backdrop-blur-sm group"
+              className="group bg-white/70 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-200/50 hover:shadow-2xl hover:scale-[1.02] transition-all duration-500"
             >
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Newspaper className="text-purple-600" size={20} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-700 transition-colors">
-                        {item.title}
-                      </h3>
-                      <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full">
-                        {item.type}
-                      </span>
+              {/* Featured badge */}
+              {item.featured && (
+                <div className="absolute top-4 right-4 z-10 bg-gradient-to-r from-purple-400 to-pink-400 text-white px-3 py-1 rounded-full text-xs font-medium">
+                  Featured
+                </div>
+              )}
+              
+              {/* Image with hover effect */}
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={item.image} 
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {/* Type ribbon */}
+                <div className={`absolute top-4 left-4 bg-gradient-to-r ${getTypeColor(item.type)} text-white px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm`}>
+                  {item.type}
+                </div>
+              </div>
+              
+              <div className="p-6">
+                <div className="mb-3">
+                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-700 transition-colors line-clamp-2 mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm font-medium text-purple-600 mb-2">{item.publication}</p>
+                </div>
+                
+                <p className="text-gray-700 text-sm mb-4 leading-relaxed line-clamp-3">
+                  {item.description}
+                </p>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3 text-xs text-gray-500">
+                    <div className="flex items-center gap-1">
+                      <Calendar size={12} className="text-purple-500" />
+                      <span>{item.date}</span>
                     </div>
-                    
-                    <p className="text-sm font-medium text-purple-600 mb-2">{item.publication}</p>
-                    <p className="text-gray-700 mb-4 leading-relaxed">{item.description}</p>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
-                        <div className="flex items-center gap-1">
-                          <Calendar size={14} className="text-purple-500" />
-                          <span>{item.date}</span>
-                        </div>
-                        <span>{item.readTime}</span>
-                      </div>
-                      <button className="flex items-center gap-1 text-purple-600 hover:text-purple-800 text-sm font-medium transition-colors">
-                        <span>Read Article</span>
-                        <ExternalLink size={14} />
-                      </button>
+                    <div className="flex items-center gap-1">
+                      <Eye size={12} className="text-purple-500" />
+                      <span>{item.readTime}</span>
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+                
+                {/* Read more button */}
+                <button className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white py-2 px-4 rounded-xl font-medium hover:from-purple-600 hover:to-pink-700 transform hover:scale-105 transition-all duration-300 group/btn">
+                  <span>Read Article</span>
+                  <ArrowUpRight size={16} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                </button>
+              </div>
+            </article>
           ))}
         </div>
       </main>
