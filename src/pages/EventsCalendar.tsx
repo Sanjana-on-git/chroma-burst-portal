@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, MapPin, Clock, Users, Star } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Clock, Users, Star, Sparkles } from 'lucide-react';
 
 const EventsCalendar = () => {
   const events = [
@@ -53,37 +53,37 @@ const EventsCalendar = () => {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'Academic': return 'from-blue-400 to-cyan-400';
-      case 'Cultural': return 'from-purple-400 to-pink-400';
-      case 'Workshop': return 'from-green-400 to-emerald-400';
-      default: return 'from-gray-400 to-slate-400';
+      case 'Academic': return 'from-blue-400/80 to-cyan-400/80';
+      case 'Cultural': return 'from-purple-400/80 to-pink-400/80';
+      case 'Workshop': return 'from-green-400/80 to-emerald-400/80';
+      default: return 'from-gray-400/80 to-slate-400/80';
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'Academic': return '🎓';
-      case 'Cultural': return '🎭';
-      case 'Workshop': return '🛠️';
-      default: return '📅';
+      case 'Academic': return Calendar;
+      case 'Cultural': return Star;
+      case 'Workshop': return Sparkles;
+      default: return Calendar;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-red-50/30 to-orange-50/20">
-      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-6 py-6">
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors mb-4 text-sm font-medium group">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/20 to-pink-50/20">
+      <header className="bg-white/90 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-colors mb-4 text-sm font-medium group">
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
             Back to Announcements
           </Link>
           
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
               <Calendar className="text-white" size={24} />
             </div>
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Events Calendar
               </h1>
               <p className="text-gray-600 mt-1">Academic, cultural, and administrative events</p>
@@ -92,71 +92,84 @@ const EventsCalendar = () => {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {events.map((event, index) => (
-            <div 
-              key={index} 
-              className="group bg-white/70 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-200/50 hover:shadow-2xl hover:scale-[1.03] transition-all duration-500"
-            >
-              {/* Featured badge */}
-              {event.featured && (
-                <div className="absolute top-4 right-4 z-10 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                  <Star size={12} fill="currentColor" />
-                  Featured
-                </div>
-              )}
-              
-              {/* Image with hover effect */}
-              <div className="relative h-48 overflow-hidden">
-                <img 
-                  src={event.image} 
-                  alt={event.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {events.map((event, index) => {
+            const IconComponent = getTypeIcon(event.type);
+            return (
+              <div 
+                key={index} 
+                className="group relative bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden border border-gray-200/50 hover:shadow-2xl hover:scale-[1.03] transition-all duration-500 hover:border-purple-300/60"
+              >
+                {/* Featured badge */}
+                {event.featured && (
+                  <div className="absolute top-4 right-4 z-10 bg-gradient-to-r from-yellow-400/90 to-orange-400/90 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 backdrop-blur-sm">
+                    <Star size={12} fill="currentColor" />
+                    Featured
+                  </div>
+                )}
                 
-                {/* RGB Icon overlay */}
-                <div className={`absolute top-4 left-4 w-12 h-12 bg-gradient-to-r ${getTypeColor(event.type)} rounded-xl flex items-center justify-center shadow-lg backdrop-blur-sm`}>
-                  <span className="text-white text-xl">{getTypeIcon(event.type)}</span>
+                {/* Image with sophisticated hover effect */}
+                <div className="relative h-48 overflow-hidden">
+                  <img 
+                    src={event.image} 
+                    alt={event.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  {/* Floating RGB icon */}
+                  <div className={`absolute top-4 left-4 w-12 h-12 bg-gradient-to-r ${getTypeColor(event.type)} rounded-2xl flex items-center justify-center shadow-lg backdrop-blur-sm group-hover:scale-110 transition-transform duration-300`}>
+                    <IconComponent className="text-white" size={20} />
+                  </div>
+
+                  {/* Date overlay */}
+                  <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="text-sm font-bold text-gray-900">{event.date}</div>
+                    <div className="text-xs text-gray-600">{event.time}</div>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-red-700 transition-colors">
+                
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className={`px-3 py-1 text-xs font-medium bg-gradient-to-r ${getTypeColor(event.type)} text-white rounded-full`}>
+                      {event.type}
+                    </span>
+                  </div>
+                  
+                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-700 transition-colors mb-2 line-clamp-2">
                     {event.title}
                   </h3>
-                  <span className={`px-2 py-1 text-xs font-medium bg-gradient-to-r ${getTypeColor(event.type)} text-white rounded-full`}>
-                    {event.type}
-                  </span>
-                </div>
-                
-                <p className="text-gray-700 text-sm mb-4 leading-relaxed line-clamp-3">
-                  {event.description}
-                </p>
-                
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <Calendar size={14} className="text-red-500" />
-                    <span className="font-medium">{event.date}</span>
+                  
+                  <p className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">
+                    {event.description}
+                  </p>
+                  
+                  <div className="space-y-2 text-xs text-gray-500">
+                    <div className="flex items-center gap-2">
+                      <Clock size={12} className="text-purple-500" />
+                      <span>{event.time}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MapPin size={12} className="text-purple-500" />
+                      <span>{event.location}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Users size={12} className="text-purple-500" />
+                      <span>{event.attendees} attendees</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Clock size={14} className="text-red-500" />
-                    <span>{event.time}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin size={14} className="text-red-500" />
-                    <span>{event.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Users size={14} className="text-red-500" />
-                    <span>{event.attendees} attendees</span>
+
+                  {/* Hover button */}
+                  <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button className="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white py-2 px-4 rounded-xl font-medium hover:from-purple-600 hover:to-pink-700 transform hover:scale-105 transition-all duration-300">
+                      View Details
+                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </main>
     </div>

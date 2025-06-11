@@ -41,15 +41,15 @@ const NewsNotifications = () => {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-gradient-to-r from-red-400 to-pink-400';
-      case 'medium': return 'bg-gradient-to-r from-blue-400 to-cyan-400';
-      default: return 'bg-gradient-to-r from-green-400 to-emerald-400';
+      case 'high': return 'bg-gradient-to-r from-red-400/80 to-pink-400/80';
+      case 'medium': return 'bg-gradient-to-r from-blue-400/80 to-cyan-400/80';
+      default: return 'bg-gradient-to-r from-green-400/80 to-emerald-400/80';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/20">
-      <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/20 to-purple-50/20">
+      <header className="bg-white/90 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-6 py-6">
           <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors mb-4 text-sm font-medium group">
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
@@ -70,16 +70,16 @@ const NewsNotifications = () => {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-12">
+      <main className="max-w-4xl mx-auto px-6 py-12 mt-6">
         <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-300 via-purple-300 to-pink-300 rounded-full"></div>
+          {/* Timeline line with proper z-index */}
+          <div className="absolute left-8 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-300/60 via-purple-300/60 to-pink-300/60 rounded-full z-0"></div>
           
-          <div className="space-y-8">
+          <div className="space-y-8 relative z-10">
             {newsItems.map((item, index) => (
               <div key={index} className="relative flex items-start gap-6 group">
                 {/* Timeline badge */}
-                <div className={`relative z-10 w-16 h-16 ${getPriorityColor(item.priority)} rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`relative z-20 w-16 h-16 ${getPriorityColor(item.priority)} rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   {item.priority === 'high' ? (
                     <AlertCircle className="text-white" size={24} />
                   ) : (
@@ -87,18 +87,18 @@ const NewsNotifications = () => {
                   )}
                 </div>
                 
-                {/* Content card */}
-                <div className="flex-1 bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50 hover:bg-white/90 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group-hover:border-purple-200">
+                {/* Content card with proper z-index */}
+                <div className="flex-1 bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50 hover:bg-white/95 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group-hover:border-purple-200 relative z-10">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <h3 className="text-xl font-semibold text-gray-900 group-hover:text-purple-700 transition-colors">
                         {item.title}
                       </h3>
-                      <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full">
+                      <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-blue-100/80 to-purple-100/80 text-blue-700 rounded-full">
                         {item.type}
                       </span>
                       {item.priority === 'high' && (
-                        <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-100 to-pink-100 text-red-700 rounded-full animate-pulse">
+                        <span className="px-3 py-1 text-xs font-medium bg-gradient-to-r from-red-100/80 to-pink-100/80 text-red-700 rounded-full animate-pulse">
                           Urgent
                         </span>
                       )}
