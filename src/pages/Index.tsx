@@ -62,7 +62,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-blue to-green-50">
       <AnnouncementHeader />
       
       <main className="max-w-6xl mx-auto px-6 py-16">

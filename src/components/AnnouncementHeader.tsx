@@ -1,37 +1,25 @@
-
 import React from 'react';
-import { Bell } from 'lucide-react';
 
 const AnnouncementHeader: React.FC = () => {
   return (
-    <header className="relative overflow-hidden bg-white">
-      {/* University background image */}
+    <header className="relative h-[400px] md:h-[500px] w-full overflow-hidden">
+      {/* Background Image */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: 'url(https://worldarchitecture.org/cdnimgfiles/extuploadc/_dsf8951.jpg)'
         }}
-      ></div>
-      
-      {/* RGB gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-cyan-600/10"></div>
-      
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-20">
-        <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-6 shadow-lg">
-            <Bell className="text-white" size={28} />
-          </div>
-          
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent mb-4">
-            Announcements
-          </h1>
-          
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6"></div>
-          
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Stay connected with the latest updates, events, and highlights from our institution
-          </p>
-        </div>
+      />
+
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/70 via-indigo-800/60 to-transparent" />
+
+      {/* Text Content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4 text-center">
+        <h1 className="text-3xl md:text-5xl font-bold drop-shadow-lg">Announcements</h1>
+        <p className="mt-4 text-lg md:text-xl drop-shadow-md max-w-2xl">
+        All campus-wide updates, events, and recognitions.
+        </p>
       </div>
     </header>
   );
