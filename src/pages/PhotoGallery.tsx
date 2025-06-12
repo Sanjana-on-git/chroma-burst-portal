@@ -1,192 +1,205 @@
+'use client';
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, Camera, ChevronLeft, ChevronRight, Play, Image as ImageIcon } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Calendar, Users, MapPin, X } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 const PhotoGallery = () => {
-  const [activeAlbum, setActiveAlbum] = useState(0);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const albums = [
+  const openModal = (event) => {
+    setSelectedEvent(event);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedEvent(null);
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = isModalOpen ? 'hidden' : 'auto';
+  }, [isModalOpen]);
+  const events = [
     {
-      title: "Convocation 2024",
-      description: "Graduation ceremony highlights and memorable moments from the Class of 2024 celebration.",
+      id: 1,
+      title: 'Tech Expo 2025',
+      date: 'May 20, 2025',
+      description: 'Explore robotics, software, and green tech innovations led by students.',
       images: [
-        { url: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1200&h=800&fit=crop", title: "Opening Ceremony", subtitle: "Distinguished guests and faculty gather" },
-        { url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&h=800&fit=crop", title: "Graduate Awards", subtitle: "Academic excellence recognition" },
-        { url: "https://images.unsplash.com/photo-1607013251379-e6eecfffe234?w=1200&h=800&fit=crop", title: "Faculty Recognition", subtitle: "Honoring educational leadership" },
-        { url: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&h=800&fit=crop", title: "Student Celebration", subtitle: "Joy and achievement captured" }
+        'https://images.unsplash.com/photo-1558685555-bcdb675f9b9a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://plus.unsplash.com/premium_photo-1681426687411-21986b0626a8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1562408590-e32931084e23?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1524676347681-e677a364744f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://plus.unsplash.com/premium_photo-1683740128079-09405ab63ab8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1722089932219-0d57ba7eabc5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       ],
-      coverImage: "🎓",
-      category: "Academic",
-      featured: true
+      attendees: 250,
+      location: 'Innovation Hall',
     },
     {
-      title: "Annual Tech Fest",
-      description: "Innovation showcase featuring student projects, competitions, and technology demonstrations.",
+      id: 2,
+      title: 'Convocation 2024',
+      date: 'April 10, 2025',
+      description: 'Graduates walk the stage with pride and dreams.',
       images: [
-        { url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&h=800&fit=crop", title: "Tech Expo", subtitle: "Latest innovations on display" },
-        { url: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=800&fit=crop", title: "Robot Competition", subtitle: "Engineering excellence" },
-        { url: "https://images.unsplash.com/photo-1518486286344-c6c8b500e5e7?w=1200&h=800&fit=crop", title: "Innovation Lab", subtitle: "Future technologies" },
-        { url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=800&fit=crop", title: "Coding Marathon", subtitle: "Programming challenges" }
+        'https://plus.unsplash.com/premium_photo-1714265045463-554b14836d42?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://plus.unsplash.com/premium_photo-1681426687411-21986b0626a8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1562408590-e32931084e23?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1524676347681-e677a364744f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://plus.unsplash.com/premium_photo-1683740128079-09405ab63ab8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1722089932219-0d57ba7eabc5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      
       ],
-      coverImage: "🤖",
-      category: "Events",
-      featured: false
+      attendees: 500,
+      location: 'Main Auditorium',
     },
     {
-      title: "Cultural Celebrations",
-      description: "Festival celebrations, artistic performances, and multicultural events throughout the year.",
+      id: 3,
+      title: 'Photography Exhibition',
+      date: 'Dec 5, 2024',
+      description: 'Capturing moments through the lens of creativity.',
       images: [
-        { url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&h=800&fit=crop", title: "Music Festival", subtitle: "Harmony and rhythm" },
-        { url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&h=800&fit=crop", title: "Dance Performance", subtitle: "Cultural expression" },
-        { url: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1200&h=800&fit=crop", title: "Art Exhibition", subtitle: "Creative showcases" },
-        { url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1200&h=800&fit=crop", title: "Cultural Night", subtitle: "Diversity celebration" }
+       'https://images.unsplash.com/photo-1488684430052-f2d92fb178c2?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://plus.unsplash.com/premium_photo-1681426687411-21986b0626a8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1562408590-e32931084e23?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1524676347681-e677a364744f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://plus.unsplash.com/premium_photo-1683740128079-09405ab63ab8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1722089932219-0d57ba7eabc5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       ],
-      coverImage: "🎭",
-      category: "Cultural",
-      featured: true
-    }
+      attendees: 180,
+      location: 'Art Gallery',
+    },
   ];
 
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => 
-      prev === albums[activeAlbum].images.length - 1 ? 0 : prev + 1
-    );
-  };
-
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => 
-      prev === 0 ? albums[activeAlbum].images.length - 1 : prev - 1
-    );
-  };
-
-  const currentImage = albums[activeAlbum].images[currentImageIndex];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/20 to-teal-50/20">
-      <header className="bg-white/90 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-emerald-600 transition-colors mb-4 text-sm font-medium group">
-            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
+        <div className="container mx-auto px-6 py-4">
+          <Button
+            variant="ghost"
+            className="gap-2 text-gray-500 hover:text-black transition-colors"
+            onClick={() => window.history.back()}
+          >
+            <ArrowLeft className="w-4 h-4" />
             Back to Announcements
-          </Link>
-          
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
-              <Camera className="text-white" size={24} />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                Photo Gallery
-              </h1>
-              <p className="text-gray-600 mt-1">Visual documentation of institutional moments</p>
-            </div>
-          </div>
+          </Button>
         </div>
-      </header>
+      </div>
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
-        {/* Elegant Album selector */}
-        <div className="flex flex-wrap gap-4 mb-12 justify-center">
-          {albums.map((album, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                setActiveAlbum(index);
-                setCurrentImageIndex(0);
-              }}
-              className={`px-8 py-4 rounded-2xl font-medium transition-all duration-500 ${
-                activeAlbum === index
-                  ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg scale-105 shadow-emerald-200'
-                  : 'bg-white/80 text-gray-700 hover:bg-white/95 hover:scale-105 border border-gray-200/50'
-              }`}
-            >
-              <span className="text-2xl mr-3">{album.coverImage}</span>
-              <span className="text-lg">{album.title}</span>
-            </button>
-          ))}
-        </div>
+      {/* Title */}
+      <div className="container mx-auto px-6 py-12 text-center">
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-red-500 via-green-500 to-blue-500 bg-clip-text text-transparent mb-6">
+          PHOTO GALLERY
+        </h1>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          A creative collage of our campus highlights, celebrating the moments that define our community.
+        </p>
+      </div>
 
-        {/* Premium Carousel */}
-        <div className="relative mb-12">
-          <div className="relative aspect-[16/10] rounded-3xl overflow-hidden shadow-2xl bg-white/90">
+      {/* Event Cards */}
+      <div className="container mx-auto px-6 pb-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {events.map((event) => (
+          <Card
+            key={event.id}
+            onClick={() => openModal(event)}
+            className="cursor-pointer group overflow-hidden shadow-md hover:shadow-lg transition-all border border-gray-200"
+          >
+            <div className="relative">
+              {event.images[0] && (
+                <img
+                  src={event.images[0]}
+                  alt={event.title}
+                  className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              )}
+              <Badge className="absolute top-4 left-4 bg-blue-600 text-white">{event.date}</Badge>
+              <div className="absolute bottom-4 left-4 text-white text-sm flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-1">
+                  <Users className="w-4 h-4" />
+                  {event.attendees}
+                </div>
+                <div className="flex items-center gap-1">
+                  <MapPin className="w-4 h-4" />
+                  {event.location}
+                </div>
+              </div>
+            </div>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+                {event.title}
+              </h3>
+              <p className="text-gray-600 mt-2">{event.description}</p>
+              <div className="flex items-center gap-2 mt-4 text-sm text-gray-500">
+                <Calendar className="w-4 h-4" />
+                {event.date}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Modal */}
+{isModalOpen && selectedEvent && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
+    <div className="relative bg-white rounded-xl shadow-2xl w-[95%] max-w-6xl max-h-[90vh] overflow-y-auto">
+
+      {/* Close Button (absolute to the MODAL not inside content) */}
+      <button
+        onClick={closeModal}
+        className="absolute top-4 right-4 z-50 bg-white border border-gray-300 rounded-full w-10 h-10 flex items-center justify-center shadow hover:text-red-500 hover:border-red-500 transition"
+      >
+        <span className="text-2xl leading-none">×</span>
+      </button>
+
+      {/* Modal Content */}
+      <div className="p-6">
+
+        {/* Hero Section */}
+        <div className="relative mb-6">
+          {selectedEvent.images.length > 0 ? (
             <img
-              src={currentImage.url}
-              alt={currentImage.title}
-              className="w-full h-full object-cover transition-all duration-700"
+              src={selectedEvent.images[0]}
+              alt="Main"
+              className="w-full h-64 object-cover rounded-md"
             />
-            
-            {/* Premium overlay with title */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500">
-              <div className="absolute bottom-8 left-8 right-8">
-                <h3 className="text-white text-3xl font-bold mb-2">{currentImage.title}</h3>
-                <p className="text-white/90 text-lg">{currentImage.subtitle}</p>
-              </div>
+          ) : (
+            <div className="w-full h-64 bg-gradient-to-r from-red-100 via-green-100 to-blue-100 rounded-md flex items-center justify-center">
+              <span className="text-xl text-gray-500">No Main Image</span>
             </div>
-
-            {/* Premium Navigation */}
-            <button
-              onClick={prevImage}
-              className="absolute left-6 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/20 backdrop-blur-md border-2 border-white/30 rounded-full flex items-center justify-center text-white hover:bg-white/30 hover:border-emerald-400/60 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] transition-all duration-300 group"
-            >
-              <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
-            </button>
-            
-            <button
-              onClick={nextImage}
-              className="absolute right-6 top-1/2 -translate-y-1/2 w-14 h-14 bg-white/20 backdrop-blur-md border-2 border-white/30 rounded-full flex items-center justify-center text-white hover:bg-white/30 hover:border-emerald-400/60 hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] transition-all duration-300 group"
-            >
-              <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
-            </button>
-
-            {/* Play button overlay */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-              <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border-2 border-white/30 hover:scale-110 transition-transform duration-300">
-                <Play className="text-white ml-1" size={32} fill="currentColor" />
-              </div>
-            </div>
-          </div>
+          )}
+          <h2 className="absolute bottom-4 left-4 text-white text-3xl font-bold drop-shadow-md z-10">
+            {selectedEvent.title}
+          </h2>
         </div>
 
-        {/* Elegant thumbnail navigation */}
-        <div className="flex gap-4 justify-center overflow-x-auto pb-4 mb-12">
-          {albums[activeAlbum].images.map((image, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentImageIndex(index)}
-              className={`flex-shrink-0 w-24 h-24 rounded-2xl overflow-hidden border-3 transition-all duration-300 hover:scale-110 ${
-                index === currentImageIndex 
-                  ? 'border-emerald-400 shadow-lg shadow-emerald-200' 
-                  : 'border-transparent hover:border-emerald-300'
-              }`}
-            >
-              <img
-                src={image.url}
-                alt={image.title}
-                className="w-full h-full object-cover"
-              />
-            </button>
+        {/* Gallery */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {selectedEvent.images.map((img, idx) => (
+            <img
+              key={idx}
+              src={img}
+              alt={`Gallery ${idx}`}
+              className="w-full h-48 object-cover rounded-md hover:scale-105 transition-transform duration-300"
+            />
           ))}
+          {selectedEvent.images.length === 0 && (
+            <p className="text-center text-gray-500 col-span-full">
+              No images available for this event.
+            </p>
+          )}
         </div>
 
-        {/* Premium Album info */}
-        <div className="bg-gradient-to-r from-white/80 to-white/60 backdrop-blur-md rounded-3xl p-8 border border-gray-200/50 shadow-xl">
-          <div className="flex items-center gap-6 mb-6">
-            <div className="w-16 h-16 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg">
-              {albums[activeAlbum].coverImage}
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">{albums[activeAlbum].title}</h2>
-              <span className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-emerald-100/80 to-teal-100/80 text-emerald-700 rounded-full">
-                {albums[activeAlbum].category}
-              </span>
-            </div>
-          </div>
-          <p className="text-gray-700 leading-relaxed text-lg">{albums[activeAlbum].description}</p>
-        </div>
-      </main>
+      </div>
     </div>
+  </div>
+)}
+
+  </div>
   );
 };
 

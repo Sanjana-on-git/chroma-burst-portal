@@ -1,7 +1,17 @@
+'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, MapPin, Clock, Users, Star, Sparkles } from 'lucide-react';
+import {
+  ArrowLeft,
+  Calendar,
+  MapPin,
+  Clock,
+  Users,
+  Star,
+  Sparkles,
+  X
+} from 'lucide-react';
 
 const EventsCalendar = () => {
   const events = [
@@ -51,6 +61,21 @@ const EventsCalendar = () => {
     }
   ];
 
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = (event: any) => {
+    setSelectedEvent(event);
+    setIsModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    setSelectedEvent(null);
+    setIsModalOpen(false);
+    document.body.style.overflow = 'auto';
+  };
+
   const getTypeColor = (type: string) => {
     switch (type) {
       case 'Academic': return 'from-blue-400/80 to-cyan-400/80';
@@ -77,7 +102,7 @@ const EventsCalendar = () => {
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
             Back to Announcements
           </Link>
-          
+
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
               <Calendar className="text-white" size={24} />
@@ -97,54 +122,50 @@ const EventsCalendar = () => {
           {events.map((event, index) => {
             const IconComponent = getTypeIcon(event.type);
             return (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className="group relative bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden border border-gray-200/50 hover:shadow-2xl hover:scale-[1.03] transition-all duration-500 hover:border-purple-300/60"
               >
-                {/* Featured badge */}
                 {event.featured && (
                   <div className="absolute top-4 right-4 z-10 bg-gradient-to-r from-yellow-400/90 to-orange-400/90 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 backdrop-blur-sm">
                     <Star size={12} fill="currentColor" />
                     Featured
                   </div>
                 )}
-                
-                {/* Image with sophisticated hover effect */}
+
                 <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={event.image} 
+                  <img
+                    src={event.image}
                     alt={event.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
-                  {/* Floating RGB icon */}
+
                   <div className={`absolute top-4 left-4 w-12 h-12 bg-gradient-to-r ${getTypeColor(event.type)} rounded-2xl flex items-center justify-center shadow-lg backdrop-blur-sm group-hover:scale-110 transition-transform duration-300`}>
                     <IconComponent className="text-white" size={20} />
                   </div>
 
-                  {/* Date overlay */}
                   <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="text-sm font-bold text-gray-900">{event.date}</div>
                     <div className="text-xs text-gray-600">{event.time}</div>
                   </div>
                 </div>
-                
+
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-3">
                     <span className={`px-3 py-1 text-xs font-medium bg-gradient-to-r ${getTypeColor(event.type)} text-white rounded-full`}>
                       {event.type}
                     </span>
                   </div>
-                  
+
                   <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-700 transition-colors mb-2 line-clamp-2">
                     {event.title}
                   </h3>
-                  
+
                   <p className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">
                     {event.description}
                   </p>
-                  
+
                   <div className="space-y-2 text-xs text-gray-500">
                     <div className="flex items-center gap-2">
                       <Clock size={12} className="text-purple-500" />
@@ -160,9 +181,11 @@ const EventsCalendar = () => {
                     </div>
                   </div>
 
-                  {/* Hover button */}
                   <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button className="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white py-2 px-4 rounded-xl font-medium hover:from-purple-600 hover:to-pink-700 transform hover:scale-105 transition-all duration-300">
+                    <button
+                      onClick={() => openModal(event)}
+                      className="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white py-2 px-4 rounded-xl font-medium hover:from-purple-600 hover:to-pink-700 transform hover:scale-105 transition-all duration-300"
+                    >
                       View Details
                     </button>
                   </div>
@@ -172,6 +195,69 @@ const EventsCalendar = () => {
           })}
         </div>
       </main>
+
+      {/* MODAL */}
+      {isModalOpen && selectedEvent && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4 py-8">
+          <div className="relative bg-white max-w-2xl w-full rounded-3xl shadow-2xl overflow-hidden">
+            <button
+              className="absolute top-4 right-4 z-10 bg-white hover:bg-red-100 text-gray-600 p-2 rounded-full shadow-sm transition"
+              onClick={closeModal}
+            >
+              <X size={20} />
+            </button>
+
+            <div className="p-6 space-y-4">
+              <div className="flex items-center gap-4">
+                <img
+                  src={selectedEvent.image}
+                  alt={selectedEvent.title}
+                  className="w-24 h-24 object-cover rounded-2xl border shadow"
+                />
+                <div>
+                  <h2 className="text-2xl font-bold text-purple-700">{selectedEvent.title}</h2>
+                  <p className="text-sm text-gray-500">{selectedEvent.type}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gray-50 p-4 rounded-xl shadow-sm flex items-center gap-3">
+                  <Calendar size={18} className="text-purple-500" />
+                  <div>
+                    <p className="text-xs text-gray-500">Date</p>
+                    <p className="text-sm font-medium text-gray-800">{selectedEvent.date}</p>
+                  </div>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-xl shadow-sm flex items-center gap-3">
+                  <Clock size={18} className="text-purple-500" />
+                  <div>
+                    <p className="text-xs text-gray-500">Time</p>
+                    <p className="text-sm font-medium text-gray-800">{selectedEvent.time}</p>
+                  </div>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-xl shadow-sm flex items-center gap-3">
+                  <MapPin size={18} className="text-purple-500" />
+                  <div>
+                    <p className="text-xs text-gray-500">Location</p>
+                    <p className="text-sm font-medium text-gray-800">{selectedEvent.location}</p>
+                  </div>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-xl shadow-sm flex items-center gap-3">
+                  <Users size={18} className="text-purple-500" />
+                  <div>
+                    <p className="text-xs text-gray-500">Attendees</p>
+                    <p className="text-sm font-medium text-gray-800">{selectedEvent.attendees}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-purple-50/50 p-4 rounded-xl shadow-inner border border-purple-200">
+                <p className="text-gray-700 text-sm leading-relaxed">{selectedEvent.description}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -9,7 +9,7 @@ const AnnouncementHeader: React.FC = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
         style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1562774053-701939374585?w=1920&h=1080&fit=crop)'
+          backgroundImage: 'url(https://worldarchitecture.org/cdnimgfiles/extuploadc/_dsf8951.jpg)'
         }}
       ></div>
       
