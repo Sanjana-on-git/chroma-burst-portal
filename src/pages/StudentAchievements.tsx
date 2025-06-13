@@ -6,12 +6,31 @@ import {
 
 const StudentAchievements = () => {
   const [selectedAchievement, setSelectedAchievement] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [yearFilter, setYearFilter] = useState('');
+  const [departmentFilter, setDepartmentFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [sortOption, setSortOption] = useState('Newest');
 
   const openModal = (achievement) => setSelectedAchievement(achievement);
   const closeModal = () => setSelectedAchievement(null);
 
   const achievements = [
     {
+      title: "National Programming Championship Winner",
+      student: "Alex Johnson",
+      department: "Computer Science",
+      year: "2024",
+      description: "First place in the annual coding competition with innovative algorithm design for sustainable computing solutions.",
+      detailedInfo: "Alex developed a revolutionary sorting algorithm that reduces computational complexity by 30%, contributing to more sustainable software development practices. The solution has been adopted by three major tech companies.",
+      award: "Gold Medal",
+      date: "Jan 15, 2024",
+      category: "Academic Excellence",
+      image: "https://images.unsplash.com/photo-1637073849667-91120a924221?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      prize: "$10,000 Scholarship",
+      icon: "💻"
+    },
+     {
       title: "National Programming Championship Winner",
       student: "Alex Johnson",
       department: "Computer Science",
@@ -95,6 +114,7 @@ const StudentAchievements = () => {
       prize: "Athletic Scholarship",
       icon: "⚡"
     }
+
   ];
 
   const getCategoryColor = (category) => {
@@ -108,6 +128,38 @@ const StudentAchievements = () => {
       default: return 'from-gray-400/80 to-slate-400/80';
     }
   };
+
+  const parseDate = (dateStr) => {
+    if (!dateStr || typeof dateStr !== 'string') return null;
+    const parsed = Date.parse(dateStr.replace(/\s+/g, ' '));
+    return isNaN(parsed) ? null : new Date(parsed);
+  };
+
+  const filteredAchievements = achievements
+    .filter((achievement) => {
+      const matchesSearch =
+        achievement.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        achievement.student.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        achievement.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesYear = yearFilter ? achievement.year === yearFilter : true;
+      const matchesDepartment = departmentFilter ? achievement.department === departmentFilter : true;
+      const matchesCategory = categoryFilter ? achievement.category === categoryFilter : true;
+
+      return matchesSearch && matchesYear && matchesDepartment && matchesCategory;
+    })
+    .sort((a, b) => {
+      const dateA = parseDate(a.date);
+      const dateB = parseDate(b.date);
+
+      if (!dateA && !dateB) return 0;
+      if (!dateA) return 1;
+      if (!dateB) return -1;
+
+      return sortOption === 'Newest'
+        ? dateB.getTime() - dateA.getTime()
+        : dateA.getTime() - dateB.getTime();
+    });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50/20 to-yellow-50/20">
@@ -133,124 +185,77 @@ const StudentAchievements = () => {
         </div>
       </header>
 
-      {/* Cards */}
-      <main className="max-w-7xl mx-auto px-6 py-12">
+      {/* Filters UI */}
+      <div className="max-w-7xl mx-auto px-6 mt-8 mb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 flex-wrap">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="🔍 Search by student, title, or description"
+            className="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm placeholder-gray-400"
+          />
+          <select
+            value={yearFilter}
+            onChange={(e) => setYearFilter(e.target.value)}
+            className="px-3 py-2 rounded-lg border border-gray-300 text-sm shadow-sm"
+          >
+            <option value="">🎓 Year</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+          </select>
+          <select
+            value={departmentFilter}
+            onChange={(e) => setDepartmentFilter(e.target.value)}
+            className="px-3 py-2 rounded-lg border border-gray-300 text-sm shadow-sm"
+          >
+            <option value="">🏫 Department</option>
+            {[...new Set(achievements.map(a => a.department))].map((dept, i) => (
+              <option key={i} value={dept}>{dept}</option>
+            ))}
+          </select>
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="px-3 py-2 rounded-lg border border-gray-300 text-sm shadow-sm"
+          >
+            <option value="">🏅 Category</option>
+            {[...new Set(achievements.map(a => a.category))].map((cat, i) => (
+              <option key={i} value={cat}>{cat}</option>
+            ))}
+          </select>
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            className="px-3 py-2 rounded-lg border border-gray-300 text-sm shadow-sm"
+          >
+            <option value="Newest">⬆️ Newest First</option>
+            <option value="Oldest">⬇️ Oldest First</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Cards Grid */}
+      <main className="max-w-7xl mx-auto px-6 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {achievements.map((achievement, index) => (
-            <div
-              key={index}
-              className="group relative bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden border border-gray-200/50 hover:shadow-2xl hover:scale-[1.03] transition-all duration-500 hover:border-amber-300/60"
-            >
-              <div className={`absolute top-0 right-0 bg-gradient-to-r ${getCategoryColor(achievement.category)} text-white px-4 py-2 rounded-bl-2xl text-xs font-medium z-10`}>
-                {achievement.category}
+          {filteredAchievements.length > 0 ? (
+            filteredAchievements.map((achievement, index) => (
+              <div
+                key={index}
+                className="bg-white border border-gray-200 rounded-xl p-6 shadow hover:shadow-lg transition-all"
+              >
+                <img src={achievement.image} alt={achievement.student} className="w-full h-48 object-cover rounded-lg mb-4" />
+                <h3 className="text-lg font-bold text-gray-900 mb-1">{achievement.title}</h3>
+                <p className="text-sm text-gray-600 mb-1">{achievement.student} - {achievement.department} ({achievement.year})</p>
+                <p className="text-sm text-gray-700 mb-2">{achievement.description}</p>
+                <p className="text-xs text-gray-500">{achievement.date}</p>
               </div>
-
-              <div className="relative h-56 overflow-hidden">
-                <img src={achievement.image} alt={achievement.student} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="absolute top-4 left-4 w-12 h-12 bg-amber-500/90 backdrop-blur-sm rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform duration-300">
-                  {achievement.icon}
-                </div>
-                <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <h3 className="text-white text-xl font-bold">{achievement.student}</h3>
-                  <p className="text-white/90 text-sm">{achievement.department} • Class of {achievement.year}</p>
-                </div>
-              </div>
-
-              <div className="p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <Trophy className="text-amber-600" size={16} />
-                  <h4 className="font-bold text-gray-900 text-lg group-hover:text-amber-700 transition-colors line-clamp-1">
-                    {achievement.title}
-                  </h4>
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed mb-4 line-clamp-3">{achievement.description}</p>
-                <div className="space-y-2 text-xs text-gray-600 mb-4">
-                  <div className="flex items-center gap-2">
-                    <Award className="text-amber-500" size={12} />
-                    <span className="font-medium">{achievement.award}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar size={12} className="text-amber-500" />
-                    <span>{achievement.date}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Star size={12} className="text-amber-500" />
-                    <span className="font-medium text-amber-700">{achievement.prize}</span>
-                  </div>
-                </div>
-
-                <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button
-                    onClick={() => openModal(achievement)}
-                    className="w-full bg-gradient-to-r from-amber-500 to-yellow-600 text-white py-3 px-4 rounded-2xl font-medium hover:from-amber-600 hover:to-yellow-700 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
-                  >
-                    <BookOpen size={16} />
-                    <span>View Full Achievement</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-500">No achievements match your filters.</p>
+          )}
         </div>
       </main>
-
-      {/* Modal */}
-    {selectedAchievement && (
-  <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-    <div className="bg-white max-w-lg w-full rounded-3xl shadow-2xl p-6 relative">
-      <button onClick={closeModal} className="absolute top-4 right-4 text-gray-400 hover:text-black transition">
-        <X size={20} />
-      </button>
-
-      {/* Header */}
-      <div className="flex items-center gap-4 mb-4">
-        <img src={selectedAchievement.image} alt="Student" className="w-14 h-14 rounded-xl object-cover" />
-        <div>
-          <h2 className="text-xl font-bold text-purple-700">{selectedAchievement.title}</h2>
-          <p className="text-sm text-gray-500">{selectedAchievement.category}</p>
-        </div>
-      </div>
-
-      {/* Card Grid */}
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="bg-gray-50 rounded-xl p-3 flex items-start gap-2">
-          <Calendar className="text-purple-500" size={18} />
-          <div>
-            <p className="text-xs text-gray-500">Date</p>
-            <p className="text-sm font-medium">{selectedAchievement.date}</p>
-          </div>
-        </div>
-        <div className="bg-gray-50 rounded-xl p-3 flex items-start gap-2">
-          <Star className="text-purple-500" size={18} />
-          <div>
-            <p className="text-xs text-gray-500">Prize</p>
-            <p className="text-sm font-medium">{selectedAchievement.prize}</p>
-          </div>
-        </div>
-        <div className="bg-gray-50 rounded-xl p-3 flex items-start gap-2">
-          <Award className="text-purple-500" size={18} />
-          <div>
-            <p className="text-xs text-gray-500">Award</p>
-            <p className="text-sm font-medium">{selectedAchievement.award}</p>
-          </div>
-        </div>
-        <div className="bg-gray-50 rounded-xl p-3 flex items-start gap-2">
-          <BookOpen className="text-purple-500" size={18} />
-          <div>
-            <p className="text-xs text-gray-500">Department</p>
-            <p className="text-sm font-medium">{selectedAchievement.department}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Description */}
-      <div className="bg-purple-50/50 rounded-xl px-4 py-3 text-sm text-gray-700 border border-purple-100">
-        {selectedAchievement.detailedInfo}
-      </div>
-    </div>
-  </div>
-)}
     </div>
   );
 };
