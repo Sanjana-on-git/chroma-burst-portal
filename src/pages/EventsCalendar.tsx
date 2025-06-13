@@ -18,243 +18,190 @@ const EventsCalendar = () => {
     {
       title: "Annual Convocation Ceremony",
       description: "Graduation ceremony celebrating the achievements of our Class of 2024 graduates with distinguished guest speakers.",
-      date: "Feb 15, 2024",
+      date: "2025-12-20",
       time: "10:00 AM",
       location: "Main Auditorium",
       type: "Academic",
       attendees: "500+",
       image: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=400&h=250&fit=crop",
-      featured: true
     },
     {
       title: "Tech Innovation Symposium",
       description: "Student presentations showcasing cutting-edge technology projects and research innovations.",
-      date: "Feb 20, 2024",
+      date: "2024-02-20",
       time: "2:00 PM",
       location: "Engineering Block",
       type: "Academic",
       attendees: "200+",
       image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=250&fit=crop",
-      featured: false
     },
     {
       title: "Spring Cultural Festival",
       description: "Three-day celebration featuring music, dance, art exhibitions, and international food stalls.",
-      date: "Mar 1-3, 2024",
+      date: "2025-07-01",
       time: "6:00 PM onwards",
       location: "Campus Grounds",
       type: "Cultural",
       attendees: "1000+",
       image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&h=250&fit=crop",
-      featured: true
     },
     {
       title: "Research Publication Workshop",
       description: "Professional development workshop focusing on academic writing and publication strategies.",
-      date: "Mar 10, 2024",
+      date: "2024-03-10",
       time: "9:00 AM",
       location: "Library Conference Room",
       type: "Workshop",
       attendees: "50+",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop",
-      featured: false
     }
   ];
 
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("Upcoming");
 
-  const openModal = (event: any) => {
+  const openModal = (event) => {
     setSelectedEvent(event);
-    setIsModalOpen(true);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   const closeModal = () => {
     setSelectedEvent(null);
-    setIsModalOpen(false);
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
   };
 
-  const getTypeColor = (type: string) => {
+  const getTypeColor = (type) => {
     switch (type) {
-      case 'Academic': return 'from-blue-400/80 to-cyan-400/80';
-      case 'Cultural': return 'from-purple-400/80 to-pink-400/80';
-      case 'Workshop': return 'from-green-400/80 to-emerald-400/80';
-      default: return 'from-gray-400/80 to-slate-400/80';
+      case "Academic": return "from-blue-500 to-cyan-500";
+      case "Cultural": return "from-pink-500 to-purple-500";
+      case "Workshop": return "from-green-500 to-emerald-500";
+      default: return "from-gray-500 to-slate-500";
     }
   };
 
-  const getTypeIcon = (type: string) => {
+  const getTypeIcon = (type) => {
     switch (type) {
-      case 'Academic': return Calendar;
-      case 'Cultural': return Star;
-      case 'Workshop': return Sparkles;
-      default: return Calendar;
+      case "Academic": return <Calendar size={16} />;
+      case "Cultural": return <Star size={16} />;
+      case "Workshop": return <Sparkles size={16} />;
+      default: return <Calendar size={16} />;
     }
   };
+
+  const today = new Date();
+  const upcomingEvents = events.filter(e => new Date(e.date) >= today);
+  const pastEvents = events.filter(e => new Date(e.date) < today);
+  const visibleEvents = activeTab === "Upcoming" ? upcomingEvents : pastEvents;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50/20 to-pink-50/20">
-      <header className="bg-white/90 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <Link to="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-colors mb-4 text-sm font-medium group">
-            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Announcements
-          </Link>
-
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
-              <Calendar className="text-white" size={24} />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Events Calendar
-              </h1>
-              <p className="text-gray-600 mt-1">Academic, cultural, and administrative events</p>
-            </div>
-          </div>
-        </div>
+    <div className="bg-gradient-to-br from-slate-50 to-purple-50 min-h-screen">
+      <header className="p-6">
+        <Link to="/" className="text-purple-600 hover:underline text-sm flex items-center gap-1">
+          <ArrowLeft size={16} /> Back
+        </Link>
+        <h1 className="text-3xl font-bold mt-3 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          Events Calendar
+        </h1>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {events.map((event, index) => {
-            const IconComponent = getTypeIcon(event.type);
-            return (
-              <div
-                key={index}
-                className="group relative bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden border border-gray-200/50 hover:shadow-2xl hover:scale-[1.03] transition-all duration-500 hover:border-purple-300/60"
-              >
-                {event.featured && (
-                  <div className="absolute top-4 right-4 z-10 bg-gradient-to-r from-yellow-400/90 to-orange-400/90 text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 backdrop-blur-sm">
-                    <Star size={12} fill="currentColor" />
-                    Featured
-                  </div>
-                )}
-
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                  <div className={`absolute top-4 left-4 w-12 h-12 bg-gradient-to-r ${getTypeColor(event.type)} rounded-2xl flex items-center justify-center shadow-lg backdrop-blur-sm group-hover:scale-110 transition-transform duration-300`}>
-                    <IconComponent className="text-white" size={20} />
-                  </div>
-
-                  <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-xl px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="text-sm font-bold text-gray-900">{event.date}</div>
-                    <div className="text-xs text-gray-600">{event.time}</div>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className={`px-3 py-1 text-xs font-medium bg-gradient-to-r ${getTypeColor(event.type)} text-white rounded-full`}>
-                      {event.type}
-                    </span>
-                  </div>
-
-                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-700 transition-colors mb-2 line-clamp-2">
-                    {event.title}
-                  </h3>
-
-                  <p className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">
-                    {event.description}
-                  </p>
-
-                  <div className="space-y-2 text-xs text-gray-500">
-                    <div className="flex items-center gap-2">
-                      <Clock size={12} className="text-purple-500" />
-                      <span>{event.time}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin size={12} className="text-purple-500" />
-                      <span>{event.location}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Users size={12} className="text-purple-500" />
-                      <span>{event.attendees} attendees</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button
-                      onClick={() => openModal(event)}
-                      className="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white py-2 px-4 rounded-xl font-medium hover:from-purple-600 hover:to-pink-700 transform hover:scale-105 transition-all duration-300"
-                    >
-                      View Details
-                    </button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </main>
-
-      {/* MODAL */}
-      {isModalOpen && selectedEvent && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4 py-8">
-          <div className="relative bg-white max-w-2xl w-full rounded-3xl shadow-2xl overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="flex justify-center gap-4 mb-6">
+          {["Upcoming", "Past"].map(tab => (
             <button
-              className="absolute top-4 right-4 z-10 bg-white hover:bg-red-100 text-gray-600 p-2 rounded-full shadow-sm transition"
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 rounded-full font-medium ${
+                activeTab === tab
+                  ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+                  : "bg-white border border-purple-300 text-purple-600 hover:bg-purple-100"
+              }`}
+            >
+              {tab} Events
+            </button>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {visibleEvents.map(event => (
+            <div
+              key={event.title}
+              className="group relative bg-white rounded-3xl shadow-md border hover:shadow-xl transition duration-300"
+            >
+              <img
+                src={event.image}
+                alt=""
+                className="rounded-t-3xl w-full h-48 object-cover"
+              />
+              <div className={`absolute top-3 left-3 w-10 h-10 flex items-center justify-center rounded-xl text-white bg-gradient-to-r ${getTypeColor(event.type)}`}>
+                {getTypeIcon(event.type)}
+              </div>
+              <div className="p-5">
+                <div className={`inline-block text-xs px-2 py-1 rounded-full text-white bg-gradient-to-r ${getTypeColor(event.type)}`}>
+                  {event.type}
+                </div>
+                <h3 className="mt-2 font-bold text-gray-900">{event.title}</h3>
+                <p className="text-gray-600 text-sm mt-1">{event.description}</p>
+                <div className="mt-3 text-xs text-gray-500 space-y-1">
+                  <div className="flex items-center gap-1">
+                    <Clock size={12} /> {event.time}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <MapPin size={12} /> {event.location}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Users size={12} /> {event.attendees}
+                  </div>
+                </div>
+                <button
+                  onClick={() => openModal(event)}
+                  className="mt-4 w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white py-2 rounded-xl hover:scale-105 transition"
+                >
+                  View Details
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Modal */}
+      {selectedEvent && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4 py-8">
+          <div className="relative bg-white w-full max-w-lg rounded-2xl p-6 shadow-xl">
+            <button
+              className="absolute top-3 right-3 bg-gray-100 hover:bg-red-200 text-gray-600 p-2 rounded-full"
               onClick={closeModal}
             >
               <X size={20} />
             </button>
-
-            <div className="p-6 space-y-4">
-              <div className="flex items-center gap-4">
-                <img
-                  src={selectedEvent.image}
-                  alt={selectedEvent.title}
-                  className="w-24 h-24 object-cover rounded-2xl border shadow"
-                />
-                <div>
-                  <h2 className="text-2xl font-bold text-purple-700">{selectedEvent.title}</h2>
-                  <p className="text-sm text-gray-500">{selectedEvent.type}</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 p-4 rounded-xl shadow-sm flex items-center gap-3">
-                  <Calendar size={18} className="text-purple-500" />
-                  <div>
-                    <p className="text-xs text-gray-500">Date</p>
-                    <p className="text-sm font-medium text-gray-800">{selectedEvent.date}</p>
-                  </div>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-xl shadow-sm flex items-center gap-3">
-                  <Clock size={18} className="text-purple-500" />
-                  <div>
-                    <p className="text-xs text-gray-500">Time</p>
-                    <p className="text-sm font-medium text-gray-800">{selectedEvent.time}</p>
-                  </div>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-xl shadow-sm flex items-center gap-3">
-                  <MapPin size={18} className="text-purple-500" />
-                  <div>
-                    <p className="text-xs text-gray-500">Location</p>
-                    <p className="text-sm font-medium text-gray-800">{selectedEvent.location}</p>
-                  </div>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-xl shadow-sm flex items-center gap-3">
-                  <Users size={18} className="text-purple-500" />
-                  <div>
-                    <p className="text-xs text-gray-500">Attendees</p>
-                    <p className="text-sm font-medium text-gray-800">{selectedEvent.attendees}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-purple-50/50 p-4 rounded-xl shadow-inner border border-purple-200">
-                <p className="text-gray-700 text-sm leading-relaxed">{selectedEvent.description}</p>
+            <div className="flex items-start gap-4">
+              <img
+                src={selectedEvent.image}
+                alt=""
+                className="w-24 h-24 object-cover rounded-xl border"
+              />
+              <div>
+                <h2 className="text-xl font-bold text-purple-700">
+                  {selectedEvent.title}
+                </h2>
+                <p className="text-sm text-gray-500">{selectedEvent.type}</p>
               </div>
             </div>
+            <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <Calendar size={16} /> {selectedEvent.date}
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock size={16} /> {selectedEvent.time}
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin size={16} /> {selectedEvent.location}
+              </div>
+              <div className="flex items-center gap-2">
+                <Users size={16} /> {selectedEvent.attendees}
+              </div>
+            </div>
+            <p className="mt-4 text-gray-700 text-sm">{selectedEvent.description}</p>
           </div>
         </div>
       )}

@@ -1,453 +1,191 @@
-'use client';
-
 import React, { useState } from 'react';
-import {
-  Microscope,
-  Calendar,
-  BookOpen,
-  DollarSign,
-  ChevronDown,
-  ChevronUp,
-  Award
-} from 'lucide-react';
-
-const schools = {
-  'School of Engineering': ['Computer Science', 'Engineering', 'Biomedical Engineering'],
-  'School of Arts': ['Humanities']
-};
+import { CalendarDays, User, Download, X, Search } from 'lucide-react';
 
 const FacultyResearch = () => {
-  const [expandedCard, setExpandedCard] = useState<number | null>(null);
-  const [selectedSchool, setSelectedSchool] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedPaper, setSelectedPaper] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDept, setSelectedDept] = useState('All');
+  const [sortOrder, setSortOrder] = useState('Newest');
 
-  const facultyResearch = [
-    {
-      faculty: 'Dr. Sarah Thompson',
-      department: 'Computer Science',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 15,
-      totalGrants: 3,
-      researchProjects: [
-        {
-          title: 'AI-Powered Educational Assessment Platform',
-          description: 'Machine learning for adaptive feedback systems in higher education.',
-          detailedDescription:
-            'Creating intelligent assessment tools that adapt to learning patterns for real-time feedback.',
-          funding: '$150,000 NSF Grant',
-          status: 'ongoing',
-          publications: 3,
-          duration: '2023-2025',
-          tags: ['Grant', 'AI Research'],
-          impact: '15 Universities Implementing'
-        }
-      ]
-    },
-    {
-      faculty: 'Dr. Sarah Thompson',
-      department: 'Computer Science',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 15,
-      totalGrants: 3,
-      researchProjects: [
-        {
-          title: 'AI-Powered Educational Assessment Platform',
-          description: 'Machine learning for adaptive feedback systems in higher education.',
-          detailedDescription:
-            'Creating intelligent assessment tools that adapt to learning patterns for real-time feedback.',
-          funding: '$150,000 NSF Grant',
-          status: 'ongoing',
-          publications: 3,
-          duration: '2023-2025',
-          tags: ['Grant', 'AI Research'],
-          impact: '15 Universities Implementing'
-        }
-      ]
-    },{
-      faculty: 'Dr. Sarah Thompson',
-      department: 'Computer Science',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 15,
-      totalGrants: 3,
-      researchProjects: [
-        {
-          title: 'AI-Powered Educational Assessment Platform',
-          description: 'Machine learning for adaptive feedback systems in higher education.',
-          detailedDescription:
-            'Creating intelligent assessment tools that adapt to learning patterns for real-time feedback.',
-          funding: '$150,000 NSF Grant',
-          status: 'ongoing',
-          publications: 3,
-          duration: '2023-2025',
-          tags: ['Grant', 'AI Research'],
-          impact: '15 Universities Implementing'
-        }
-      ]
-    },
-    {
-      faculty: 'Dr. Sarah Thompson',
-      department: 'Computer Science',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 15,
-      totalGrants: 3,
-      researchProjects: [
-        {
-          title: 'AI-Powered Educational Assessment Platform',
-          description: 'Machine learning for adaptive feedback systems in higher education.',
-          detailedDescription:
-            'Creating intelligent assessment tools that adapt to learning patterns for real-time feedback.',
-          funding: '$150,000 NSF Grant',
-          status: 'ongoing',
-          publications: 3,
-          duration: '2023-2025',
-          tags: ['Grant', 'AI Research'],
-          impact: '15 Universities Implementing'
-        }
-      ]
-    },
-    {
-      faculty: 'Dr. John Smith',
-      department: 'Engineering',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 15,
-      totalGrants: 3,
-      researchProjects: [
-        {
-          title: 'AI-Powered Educational Assessment Platform',
-          description: 'Machine learning for adaptive feedback systems in higher education.',
-          detailedDescription:
-            'Creating intelligent assessment tools that adapt to learning patterns for real-time feedback.',
-          funding: '$150,000 NSF Grant',
-          status: 'ongoing',
-          publications: 3,
-          duration: '2023-2025',
-          tags: ['Grant', 'AI Research'],
-          impact: '15 Universities Implementing'
-        }
-      ]
-    },
-    {
-      faculty: 'Dr. John Smith',
-      department: 'Engineering',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 15,
-      totalGrants: 3,
-      researchProjects: [
-        {
-          title: 'AI-Powered Educational Assessment Platform',
-          description: 'Machine learning for adaptive feedback systems in higher education.',
-          detailedDescription:
-            'Creating intelligent assessment tools that adapt to learning patterns for real-time feedback.',
-          funding: '$150,000 NSF Grant',
-          status: 'ongoing',
-          publications: 3,
-          duration: '2023-2025',
-          tags: ['Grant', 'AI Research'],
-          impact: '15 Universities Implementing'
-        }
-      ]
-    },
-    {
-      faculty: 'Dr. Rachel Kim',
-      department: 'Biomedical Engineering',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 18,
-      totalGrants: 4,
-      researchProjects: [
-        {
-          title: 'Biomedical Imaging Enhancement',
-          description: 'AI-enhanced scanning for early disease detection.',
-          detailedDescription:
-            'Combining AI with imaging to detect diseases earlier and more accurately.',
-          funding: '$180,000 NIH Grant',
-          status: 'ongoing',
-          publications: 4,
-          duration: '2023-2026',
-          tags: ['Grant', 'Medical Innovation'],
-          impact: 'Clinical Trials Starting'
-        }
-      ]
-    },
-    {
-      faculty: 'Dr. Rachel Kim',
-      department: 'Biomedical Engineering',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 18,
-      totalGrants: 4,
-      researchProjects: [
-        {
-          title: 'Biomedical Imaging Enhancement',
-          description: 'AI-enhanced scanning for early disease detection.',
-          detailedDescription:
-            'Combining AI with imaging to detect diseases earlier and more accurately.',
-          funding: '$180,000 NIH Grant',
-          status: 'ongoing',
-          publications: 4,
-          duration: '2023-2026',
-          tags: ['Grant', 'Medical Innovation'],
-          impact: 'Clinical Trials Starting'
-        }
-      ]
-    },
-    {
-      faculty: 'Dr. Rachel Kim',
-      department: 'Biomedical Engineering',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 18,
-      totalGrants: 4,
-      researchProjects: [
-        {
-          title: 'Biomedical Imaging Enhancement',
-          description: 'AI-enhanced scanning for early disease detection.',
-          detailedDescription:
-            'Combining AI with imaging to detect diseases earlier and more accurately.',
-          funding: '$180,000 NIH Grant',
-          status: 'ongoing',
-          publications: 4,
-          duration: '2023-2026',
-          tags: ['Grant', 'Medical Innovation'],
-          impact: 'Clinical Trials Starting'
-        }
-      ]
-    },
-    {
-      faculty: 'Dr. Rachel Kim',
-      department: 'Humanities',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 18,
-      totalGrants: 4,
-      researchProjects: [
-        {
-          title: 'Biomedical Imaging Enhancement',
-          description: 'AI-enhanced scanning for early disease detection.',
-          detailedDescription:
-            'Combining AI with imaging to detect diseases earlier and more accurately.',
-          funding: '$180,000 NIH Grant',
-          status: 'ongoing',
-          publications: 4,
-          duration: '2023-2026',
-          tags: ['Grant', 'Medical Innovation'],
-          impact: 'Clinical Trials Starting'
-        }
-      ]
-    },
-    {
-      faculty: 'Dr. Ant Wilson',
-      department: 'Humanities',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 18,
-      totalGrants: 4,
-      researchProjects: [
-        {
-          title: 'Biomedical Imaging Enhancement',
-          description: 'AI-enhanced scanning for early disease detection.',
-          detailedDescription:
-            'Combining AI with imaging to detect diseases earlier and more accurately.',
-          funding: '$180,000 NIH Grant',
-          status: 'ongoing',
-          publications: 4,
-          duration: '2023-2026',
-          tags: ['Grant', 'Medical Innovation'],
-          impact: 'Clinical Trials Starting'
-        }
-      ]
-    },
-    {
-      faculty: 'Dr. Ant Wilson',
-      department: 'Engineering',
-      position: 'Professor',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face',
-      totalPublications: 18,
-      totalGrants: 4,
-      researchProjects: [
-        {
-          title: 'Biomedical Imaging Enhancement',
-          description: 'AI-enhanced scanning for early disease detection.',
-          detailedDescription:
-            'Combining AI with imaging to detect diseases earlier and more accurately.',
-          funding: '$180,000 NIH Grant',
-          status: 'ongoing',
-          publications: 4,
-          duration: '2023-2026',
-          tags: ['Grant', 'Medical Innovation'],
-          impact: 'Clinical Trials Starting'
-        }
-      ]
-    }
-    
-  ];
+  const publications = [ {
+    faculty: "Dr. Ritu Sharma",
+    department: "Computer Science",
+    papers: [
+      {
+        title: "AI-Powered Learning Systems",
+        journal: "International Journal of AI Research",
+        date: "2024-03-12",
+        abstract: "This paper explores the use of AI to personalize student learning experiences in real-time.",
+        coAuthors: ["Dr. Nikhil Jain", "Prof. Kavita Mehra"],
+        downloadLink: "https://example.com/paper1.pdf"
+      }
+    ]
+  },
+  {
+    faculty: "Dr. Ajay Verma",
+    department: "Information Technology",
+    papers: [
+      {
+        title: "Blockchain in Higher Education",
+        journal: "Journal of Emerging Tech in Education",
+        date: "2024-01-22",
+        abstract: "An examination of how blockchain can secure academic credentials and streamline verification.",
+        coAuthors: ["Dr. Meena Sharma"],
+        downloadLink: "https://example.com/paper2.pdf"
+      }
+    ]
+  },
+  {
+    faculty: "Dr. Meena Sharma",
+    department: "Law, Justice and Governance",
+    papers: [
+      {
+        title: "Law and Technology: A New Paradigm",
+        journal: "Journal of Emerging Tech in Law",
+        date: "2023-01-22",
+        abstract: "An examination of how blockchain can secure academic credentials and streamline verification.",
+        coAuthors: ["Dr. Meena Sharma"],
+        downloadLink: "https://example.com/paper2.pdf"
+      }
+    ]
+  },
+  {
+    faculty: "Dr. Sanya Verma",
+    department: "BioTechnology",
+    papers: [
+      {
+        title: " Importance of CRISPR in Modern Medicine",
+        journal: "Journal of Emerging Tech in Education",
+        date: "202-01-22",
+        abstract: "An examination of how blockchain can secure academic credentials and streamline verification.",
+        coAuthors: ["Dr. Meena Sharma"],
+        downloadLink: "https://example.com/paper2.pdf"
+      }
+    ]
+  }
+];
 
-  const toggleExpansion = (index: number) => {
-    setExpandedCard(expandedCard === index ? null : index);
-  };
+  const departments = Array.from(new Set(publications.map(p => p.department)));
 
-  const getTagColor = (tag: string) => {
-    switch (tag) {
-      case 'Grant':
-        return 'bg-green-200 text-green-800';
-      case 'AI Research':
-        return 'bg-blue-200 text-blue-800';
-      case 'Medical Innovation':
-        return 'bg-pink-200 text-pink-800';
-      default:
-        return 'bg-gray-200 text-gray-800';
-    }
-  };
+  const filtered = publications.flatMap(faculty => {
+    const matchDept = selectedDept === 'All' || faculty.department === selectedDept;
+    const filteredPapers = faculty.papers.filter(paper =>
+      paper.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      paper.abstract.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    return matchDept && filteredPapers.length > 0
+      ? [{ ...faculty, papers: filteredPapers }]
+      : [];
+  });
 
-  const filteredFaculty = facultyResearch.filter(faculty => faculty.department === selectedDepartment);
+  const sorted = filtered.map(faculty => ({
+    ...faculty,
+    papers: faculty.papers.sort((a, b) =>
+      sortOrder === 'Newest'
+        ? new Date(b.date).getTime() - new Date(a.date).getTime()
+        : new Date(a.date).getTime() - new Date(b.date).getTime()
+    )
+  }));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-white flex flex-col items-center justify-center px-4 py-10">
-      <h1 className="text-4xl font-extrabold text-gray-800 mb-8 flex items-center gap-3">
-        <Microscope className="text-teal-500" /> Faculty Research
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-sky-50 to-lime-50 py-12 px-6">
+      <h1 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+        Faculty Publication Announcements
       </h1>
 
-      {/* Selection Card */}
-      {/* Selection Card */}
-<div className="w-full max-w-md mx-auto mb-16">
-  <div className="p-[2px] rounded-xl bg-gradient-to-r from-teal-400 via-blue-400 to-purple-400 shadow-lg">
-    <div className="bg-white rounded-xl p-8">
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
-          <Microscope className="text-teal-600" size={20} />
-          Filter Faculty Research
-        </h2>
-        <p className="text-sm text-gray-500 mt-1">
-          Select a school and department to view related research details.
-        </p>
-      </div>
-
-      <div className="space-y-5">
-        <div>
-          <label htmlFor="school" className="block text-sm font-medium text-gray-700">
-            School
-          </label>
+      {/* Filters & Search */}
+      <div className="max-w-6xl mx-auto mb-10 flex flex-col md:flex-row gap-4 justify-between items-center">
+        <div className="relative w-full md:w-1/2">
+          <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            placeholder="Search by title or abstract..."
+            className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-300 shadow focus:ring-2 focus:ring-pink-200 bg-white text-sm"
+          />
+        </div>
+        <div className="flex gap-3 flex-wrap">
           <select
-            id="school"
-            value={selectedSchool}
-            onChange={(e) => {
-              const school = e.target.value;
-              setSelectedSchool(school);
-              setSelectedDepartment(school ? schools[school][0] : '');
-            }}
-            className="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-teal-500 focus:border-teal-500"
+            value={selectedDept}
+            onChange={(e) => setSelectedDept(e.target.value)}
+            className="rounded-xl border border-gray-300 px-3 py-2 text-sm bg-white shadow-sm focus:ring-2 focus:ring-sky-100"
           >
-            <option value="">-- Select School --</option>
-            {Object.keys(schools).map((school, index) => (
-              <option key={index} value={school}>
-                {school}
-              </option>
+            <option value="All">All Departments</option>
+            {departments.map((dept, i) => (
+              <option key={i} value={dept}>{dept}</option>
             ))}
           </select>
-        </div>
-
-        <div>
-          <label htmlFor="department" className="block text-sm font-medium text-gray-700">
-            Department
-          </label>
           <select
-            id="department"
-            value={selectedDepartment}
-            onChange={(e) => setSelectedDepartment(e.target.value)}
-            disabled={!selectedSchool}
-            className="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value)}
+            className="rounded-xl border border-gray-300 px-3 py-2 text-sm bg-white shadow-sm focus:ring-2 focus:ring-lime-100"
           >
-            <option value="">-- Select Department --</option>
-            {selectedSchool &&
-              schools[selectedSchool].map((dept, index) => (
-                <option key={index} value={dept}>
-                  {dept}
-                </option>
-              ))}
+            <option value="Newest">Sort by Newest</option>
+            <option value="Oldest">Sort by Oldest</option>
           </select>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-     {/* Faculty Cards */}
-      {selectedSchool && selectedDepartment ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl px-4">
-          {filteredFaculty.map((faculty, index) => (
-            <div
-              key={index}
-              className="bg-white border  rounded-3xl p-6  transition duration-300"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <img
-                  src={faculty.image}
-                  alt={faculty.faculty}
-                  className="w-16 h-16 rounded-full object-cover border"
-                />
-                <div>
-                  <h3 className="text-lg font-semibold">{faculty.faculty}</h3>
-                  <p className="text-sm text-gray-500">{faculty.position}</p>
-                </div>
+
+      {/* Research Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+        {sorted.map((faculty, index) => (
+          <div key={index} className="bg-white rounded-2xl p-6 border border-gray-200 shadow-md hover:shadow-lg transition">
+            <div className="flex items-center gap-3 mb-4">
+              <User className="text-rose-500" />
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">{faculty.faculty}</h2>
+                <p className="text-sm text-gray-500">{faculty.department}</p>
               </div>
-              {faculty.researchProjects.map((proj, i) => (
-                <div key={i}>
-                  <h4 className="text-md font-medium mb-2">{proj.title}</h4>
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {proj.tags.map((tag, idx) => (
-                      <span
-                        key={idx}
-                        className={`px-2 py-1 text-xs font-semibold rounded-full ${getTagColor(tag)}`}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <p className="text-sm text-gray-600 mb-3">{proj.description}</p>
-                  <div className="grid grid-cols-2 gap-2 text-xs text-gray-500 mb-3">
-                    <div className="flex items-center gap-1">
-                      <DollarSign size={14} /> {proj.funding}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar size={14} /> {proj.duration}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <BookOpen size={14} /> {proj.publications} Pubs
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Award size={14} /> {proj.impact}
-                    </div>
-                  </div>
-                  {expandedCard === index ? (
-                    <>
-                      <p className="text-sm text-gray-700">{proj.detailedDescription}</p>
-                      <button
-                        className="text-sm text-blue-600 mt-2 flex items-center gap-1"
-                        onClick={() => toggleExpansion(index)}
-                      >
-                        Show Less <ChevronUp size={14} />
-                      </button>
-                    </>
-                  ) : (
-                    <button
-                      className="text-sm text-blue-600 mt-2 flex items-center gap-1"
-                      onClick={() => toggleExpansion(index)}
-                    >
-                      View Research Details <ChevronDown size={14} />
-                    </button>
-                  )}
-                </div>
-              ))}
             </div>
-          ))}
+            {faculty.papers.map((paper, idx) => (
+              <div key={idx} className="mb-5">
+                <h3 className="text-lg font-medium text-gray-700">{paper.title}</h3>
+                <p className="text-sm italic text-gray-500">{paper.journal}</p>
+                <div className="flex items-center gap-2 text-sm text-gray-400 mt-1">
+                  <CalendarDays size={14} /> <span>{paper.date}</span>
+                </div>
+                <button
+                  onClick={() => setSelectedPaper({ ...paper, faculty: faculty.faculty })}
+                  className="mt-2 inline-block text-sm text-pink-600 hover:text-pink-800 underline"
+                >
+                  View Details
+                </button>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* Modal */}
+      {selectedPaper && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+          <div className="relative bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-gray-100">
+            <button
+              className="absolute top-4 right-4 text-gray-500 hover:text-red-500"
+              onClick={() => setSelectedPaper(null)}
+            >
+              <X size={20} />
+            </button>
+            <h2 className="text-2xl font-bold text-pink-600">{selectedPaper.title}</h2>
+            <p className="text-sm text-gray-600 mt-1">{selectedPaper.journal}</p>
+            <p className="text-sm text-gray-500 mb-4">By {selectedPaper.faculty} · {selectedPaper.coAuthors.join(", ")}</p>
+
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4">
+              <h3 className="text-sm font-semibold text-gray-700 mb-1">Abstract:</h3>
+              <p className="text-sm text-gray-600">{selectedPaper.abstract}</p>
+            </div>
+
+            <a
+              href={selectedPaper.downloadLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-xl shadow hover:from-pink-600 hover:to-purple-600 transition"
+            >
+              <Download size={16} /> Download Paper
+            </a>
+          </div>
         </div>
-      ) : (
-        <div className="text-center text-gray-600 mt-8 text-lg">Please select a school and department to continue.</div>
       )}
     </div>
   );

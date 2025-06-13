@@ -75,6 +75,20 @@ const PhotoGallery = () => {
     },
   ];
 
+  const [yearFilter, setYearFilter] = useState('');
+const [monthFilter, setMonthFilter] = useState('');
+const [typeFilter, setTypeFilter] = useState('');
+const [searchQuery, setSearchQuery] = useState('');
+
+const filteredEvents = events.filter(event => {
+  const eventDate = new Date(event.date);
+  const matchesYear = yearFilter ? eventDate.getFullYear().toString() === yearFilter : true;
+  const matchesMonth = monthFilter ? (eventDate.getMonth() + 1).toString().padStart(2, '0') === monthFilter : true;
+  const matchesType = typeFilter ? event.title.toLowerCase().includes(typeFilter.toLowerCase()) : true;
+  const matchesSearch = searchQuery ? event.title.toLowerCase().includes(searchQuery.toLowerCase()) || event.description.toLowerCase().includes(searchQuery.toLowerCase()) : true;
+  return matchesYear && matchesMonth && matchesType && matchesSearch;
+});
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -100,10 +114,38 @@ const PhotoGallery = () => {
           A creative collage of our campus highlights, celebrating the moments that define our community.
         </p>
       </div>
-
+<div className="container mx-auto px-6 pb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
+  <div className="flex gap-3 flex-wrap">
+    <select onChange={(e) => setYearFilter(e.target.value)} className="border rounded px-3 py-2 text-sm">
+      <option value="">All Years</option>
+      <option value="2024">2024</option>
+      <option value="2025">2025</option>
+    </select>
+    <select onChange={(e) => setMonthFilter(e.target.value)} className="border rounded px-3 py-2 text-sm">
+      <option value="">All Months</option>
+      <option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option>
+      <option value="04">Apr</option><option value="05">May</option><option value="06">Jun</option>
+      <option value="07">Jul</option><option value="08">Aug</option><option value="09">Sep</option>
+      <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+    </select>
+    <select onChange={(e) => setTypeFilter(e.target.value)} className="border rounded px-3 py-2 text-sm">
+      <option value="">All Types</option>
+      <option value="Tech Expo">Tech Expo</option>
+      <option value="Convocation">Convocation</option>
+      <option value="Exhibition">Exhibition</option>
+    </select>
+  </div>
+  <input
+    type="text"
+    placeholder="Search events..."
+    onChange={(e) => setSearchQuery(e.target.value)}
+    className="border rounded px-4 py-2 w-full md:w-64 text-sm"
+  />
+</div>
       {/* Event Cards */}
       <div className="container mx-auto px-6 pb-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {events.map((event) => (
+       {filteredEvents.map((event) => (
+
           <Card
             key={event.id}
             onClick={() => openModal(event)}
