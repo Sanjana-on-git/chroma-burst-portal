@@ -58,6 +58,15 @@ const Index = () => {
       textColorClass: "text-indigo-800",
       delay: 600,
       navigateTo: "/faculty-research"
+    },
+{
+      title: "Awards & Recognition",
+      description: "  Celebrating outstanding achievements and contributions across academics, research, innovation, and cultural excellence.",
+      emoji: "🏅",
+      bgClass: "bg-gradient-to-br from-indigo-50/80 to-violet-50/80 border border-indigo-200/30",
+      textColorClass: "text-indigo-800",
+      delay: 600,
+      navigateTo: "/Awards"
     }
   ];
 

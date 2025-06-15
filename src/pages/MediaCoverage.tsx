@@ -7,6 +7,8 @@ import {
   Eye,
   Award,
   Newspaper,
+  ArchiveRestore,
+  Archive,
 } from "lucide-react";
 
 const mediaData = [
@@ -51,11 +53,20 @@ const mediaData = [
     views: "3.2K",
   },
 ];
-
 const MediaCoverage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [yearFilter, setYearFilter] = useState("");
   const [monthFilter, setMonthFilter] = useState("");
+  const [archivedItems, setArchivedItems] = useState<string[]>([]);
+  const [showArchived, setShowArchived] = useState(false);
+
+  const handleArchiveToggle = (title: string) => {
+    setArchivedItems((prev) =>
+      prev.includes(title)
+        ? prev.filter((t) => t !== title)
+        : [...prev, title]
+    );
+  };
 
   const filterMediaData = mediaData.filter((item) => {
     const [month, , year] = item.date.split(" ");
@@ -66,6 +77,10 @@ const MediaCoverage = () => {
     const matchesMonth = monthFilter ? month === monthFilter : true;
     return matchesSearch && matchesYear && matchesMonth;
   });
+
+  const displayData = filterMediaData.filter((item) =>
+    showArchived ? archivedItems.includes(item.title) : !archivedItems.includes(item.title)
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fdfbfb] via-[#ebedff] to-[#ffe8e8] px-4 py-10 sm:px-8">
@@ -119,7 +134,9 @@ const MediaCoverage = () => {
                   <h3 className="text-lg font-bold text-gray-800 mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-gray-600 mb-4">{item.description}</p>
+                  <p className="text-sm text-gray-600 mb-4">
+                    {item.description}
+                  </p>
                   <div className="flex justify-between text-xs text-gray-500">
                     <span className="flex items-center gap-1">
                       <Calendar size={12} />
@@ -130,6 +147,22 @@ const MediaCoverage = () => {
                       {item.views} views
                     </span>
                   </div>
+                  <button
+                    onClick={() => handleArchiveToggle(item.title)}
+                    className="mt-4 w-full py-2 rounded-lg border text-sm font-medium hover:bg-gray-100 flex items-center justify-center gap-2"
+                  >
+                    {archivedItems.includes(item.title) ? (
+                      <>
+                        <ArchiveRestore size={14} />
+                        Unarchive
+                      </>
+                    ) : (
+                      <>
+                        <Archive size={14} />
+                        Archive
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
             ))}
@@ -138,55 +171,55 @@ const MediaCoverage = () => {
 
       {/* All Coverage with Filters */}
       <section className="max-w-7xl mx-auto">
-        {/* 🔍 Filters and Search */}
+        {/* Tabs */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold text-gray-800">
+            {showArchived ? "📦 Archived Media" : "📰 All Coverage"}
+          </h2>
+          <button
+            onClick={() => setShowArchived(!showArchived)}
+            className="px-4 py-2 rounded-full bg-pink-100 hover:bg-pink-200 text-pink-600 text-sm font-medium transition-all"
+          >
+            {showArchived ? "🔙 View All" : "📦 View Archived"}
+          </button>
+        </div>
+
+        {/* Filters */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-  <h2 className="text-xl font-bold text-gray-800">📰 All Coverage</h2>
+          <div className="flex flex-wrap gap-3">
+            <input
+              type="text"
+              placeholder="🔍 Search by title or description..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="px-4 py-2 w-64 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm placeholder-gray-400"
+            />
+            <select
+              value={monthFilter}
+              onChange={(e) => setMonthFilter(e.target.value)}
+              className="px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm text-sm focus:ring-2 focus:ring-orange-300"
+            >
+              <option value="">📅 Month</option>
+              {["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map((m) => (
+                <option key={m} value={m}>{m}</option>
+              ))}
+            </select>
+            <select
+              value={yearFilter}
+              onChange={(e) => setYearFilter(e.target.value)}
+              className="px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm text-sm focus:ring-2 focus:ring-green-300"
+            >
+              <option value="">📆 Year</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+            </select>
+          </div>
+        </div>
 
-  <div className="flex flex-wrap gap-3">
-    <input
-      type="text"
-      placeholder="🔍 Search by title or description..."
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className="px-4 py-2 w-64 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-400 text-sm placeholder-gray-400"
-    />
-
-    <select
-      value={monthFilter}
-      onChange={(e) => setMonthFilter(e.target.value)}
-      className="px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm text-sm focus:ring-2 focus:ring-orange-300"
-    >
-      <option value="">📅 Month</option>
-      <option value="Jan">Jan</option>
-      <option value="Feb">Feb</option>
-      <option value="Mar">Mar</option>
-      <option value="Apr">Apr</option>
-      <option value="May">May</option>
-      <option value="Jun">Jun</option>
-      <option value="Jul">Jul</option>
-      <option value="Aug">Aug</option>
-      <option value="Sep">Sep</option>
-      <option value="Oct">Oct</option>
-      <option value="Nov">Nov</option>
-      <option value="Dec">Dec</option>
-    </select>
-
-    <select
-      value={yearFilter}
-      onChange={(e) => setYearFilter(e.target.value)}
-      className="px-3 py-2 rounded-lg border border-gray-300 bg-white shadow-sm text-sm focus:ring-2 focus:ring-green-300"
-    >
-      <option value="">📆 Year</option>
-      <option value="2023">2023</option>
-      <option value="2024">2024</option>
-    </select>
-  </div>
-</div>
-
-
+        {/* Cards */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filterMediaData.length > 0 ? (
-            filterMediaData.map((item, index) => (
+          {displayData.length > 0 ? (
+            displayData.map((item, index) => (
               <div
                 key={index}
                 className="group bg-white/30 backdrop-blur-md border border-white/20 rounded-xl shadow-md hover:shadow-xl hover:scale-[1.01] transition-all"
@@ -201,7 +234,9 @@ const MediaCoverage = () => {
                   <h4 className="text-md font-semibold text-gray-800 group-hover:text-pink-600">
                     {item.title}
                   </h4>
-                  <p className="text-sm text-gray-600 mt-2 line-clamp-3">{item.description}</p>
+                  <p className="text-sm text-gray-600 mt-2 line-clamp-3">
+                    {item.description}
+                  </p>
                   <div className="flex justify-between text-xs text-gray-500 mt-4">
                     <span className="flex items-center gap-1">
                       <Calendar size={12} />
@@ -215,11 +250,29 @@ const MediaCoverage = () => {
                   <button className="mt-4 w-full py-2 rounded-lg bg-gradient-to-r from-pink-400 to-orange-300 text-white font-medium hover:from-pink-500 hover:to-orange-400 transition-all flex items-center justify-center gap-2">
                     Read More <ExternalLink size={14} />
                   </button>
+                  <button
+                    onClick={() => handleArchiveToggle(item.title)}
+                    className="mt-2 w-full py-1.5 rounded-lg border text-sm font-medium hover:bg-gray-100 flex items-center justify-center gap-2"
+                  >
+                    {archivedItems.includes(item.title) ? (
+                      <>
+                        <ArchiveRestore size={14} />
+                        Unarchive
+                      </>
+                    ) : (
+                      <>
+                        <Archive size={14} />
+                        Archive
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-500 col-span-full">No media found matching your criteria.</p>
+            <p className="text-center text-gray-500 col-span-full">
+              No media found matching your criteria.
+            </p>
           )}
         </div>
       </section>

@@ -10,14 +10,16 @@ import {
   Users,
   Star,
   Sparkles,
-  X
+  Archive,
+  X,
 } from 'lucide-react';
 
 const EventsCalendar = () => {
-  const events = [
+  const allEvents = [
     {
+      id: 1,
       title: "Annual Convocation Ceremony",
-      description: "Graduation ceremony celebrating the achievements of our Class of 2024 graduates with distinguished guest speakers.",
+      description: "Graduation ceremony celebrating achievements.",
       date: "2025-12-20",
       time: "10:00 AM",
       location: "Main Auditorium",
@@ -26,8 +28,9 @@ const EventsCalendar = () => {
       image: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=400&h=250&fit=crop",
     },
     {
+      id: 2,
       title: "Tech Innovation Symposium",
-      description: "Student presentations showcasing cutting-edge technology projects and research innovations.",
+      description: "Showcasing technology projects.",
       date: "2024-02-20",
       time: "2:00 PM",
       location: "Engineering Block",
@@ -36,40 +39,85 @@ const EventsCalendar = () => {
       image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=250&fit=crop",
     },
     {
+      id: 3,
       title: "Spring Cultural Festival",
-      description: "Three-day celebration featuring music, dance, art exhibitions, and international food stalls.",
+      description: "Three-day celebration with performances.",
       date: "2025-07-01",
-      time: "6:00 PM onwards",
+      time: "6:00 PM",
       location: "Campus Grounds",
       type: "Cultural",
       attendees: "1000+",
       image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&h=250&fit=crop",
     },
     {
-      title: "Research Publication Workshop",
-      description: "Professional development workshop focusing on academic writing and publication strategies.",
-      date: "2024-03-10",
+      id: 4,
+      title: "Hackathon",
+      description: "Workshop on academic writing.",
+      date: "2025-09-10",
       time: "9:00 AM",
       location: "Library Conference Room",
       type: "Workshop",
       attendees: "50+",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop",
-    }
+    },
+    {
+      id: 5,
+      title: "Cultural event",
+      description: "Workshop on academic writing.",
+      date: "2025-06-20",
+      time: "9:00 AM",
+      location: "Library Conference Room",
+      type: "Workshop",
+      attendees: "50+",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop",
+    },
+    {
+      id: 6,
+      title: "Research Publication Workshop",
+      description: "Workshop on academic writing.",
+      date: "2025-06-23",
+      time: "9:00 AM",
+      location: "Library Conference Room",
+      type: "Workshop",
+      attendees: "50+",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop",
+    },
+    {
+      id: 7,
+      title: "Research Publication Workshop",
+      description: "Workshop on academic writing.",
+      date: "2025-07-30",
+      time: "9:00 AM",
+      location: "Library Conference Room",
+      type: "Workshop",
+      attendees: "50+",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop",
+    },
   ];
 
+  const [archivedIds, setArchivedIds] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [activeTab, setActiveTab] = useState("Upcoming");
 
-  const openModal = (event) => {
-    setSelectedEvent(event);
-    document.body.style.overflow = "hidden";
+  const today = new Date();
+  const isArchived = (id) => archivedIds.includes(id);
+
+  const archiveEvent = (id) => {
+    setArchivedIds([...archivedIds, id]);
   };
 
-  const closeModal = () => {
-    setSelectedEvent(null);
-    document.body.style.overflow = "auto";
+  const unarchiveEvent = (id) => {
+    setArchivedIds(archivedIds.filter(aid => aid !== id));
   };
 
+  const upcomingEvents = allEvents.filter(e => new Date(e.date) >= today && !isArchived(e.id));
+  const pastEvents = allEvents.filter(e => new Date(e.date) < today && !isArchived(e.id));
+  const archivedEvents = allEvents.filter(e => isArchived(e.id));
+
+  const visibleEvents =
+    activeTab === "Upcoming" ? upcomingEvents :
+    activeTab === "Past" ? pastEvents :
+    archivedEvents;
   const getTypeColor = (type) => {
     switch (type) {
       case "Academic": return "from-blue-500 to-cyan-500";
@@ -88,10 +136,15 @@ const EventsCalendar = () => {
     }
   };
 
-  const today = new Date();
-  const upcomingEvents = events.filter(e => new Date(e.date) >= today);
-  const pastEvents = events.filter(e => new Date(e.date) < today);
-  const visibleEvents = activeTab === "Upcoming" ? upcomingEvents : pastEvents;
+  const openModal = (event) => {
+    setSelectedEvent(event);
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeModal = () => {
+    setSelectedEvent(null);
+    document.body.style.overflow = "auto";
+  };
 
   return (
     <div className="bg-gradient-to-br from-slate-50 to-purple-50 min-h-screen">
@@ -106,7 +159,7 @@ const EventsCalendar = () => {
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex justify-center gap-4 mb-6">
-          {["Upcoming", "Past"].map(tab => (
+          {["Upcoming", "Past", "Archived"].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -124,7 +177,7 @@ const EventsCalendar = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {visibleEvents.map(event => (
             <div
-              key={event.title}
+              key={event.id}
               className="group relative bg-white rounded-3xl shadow-md border hover:shadow-xl transition duration-300"
             >
               <img
@@ -158,13 +211,28 @@ const EventsCalendar = () => {
                 >
                   View Details
                 </button>
+
+                {activeTab !== 'Archived' ? (
+                  <button
+                    onClick={() => archiveEvent(event.id)}
+                    className="mt-2 w-full flex items-center justify-center gap-2 text-sm text-purple-600 border border-purple-300 py-1 rounded-xl hover:bg-purple-100"
+                  >
+                    <Archive size={16} /> Archive
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => unarchiveEvent(event.id)}
+                    className="mt-2 w-full flex items-center justify-center gap-2 text-sm text-emerald-600 border border-emerald-300 py-1 rounded-xl hover:bg-emerald-100"
+                  >
+                    <Archive size={16} /> Unarchive
+                  </button>
+                )}
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Modal */}
       {selectedEvent && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4 py-8">
           <div className="relative bg-white w-full max-w-lg rounded-2xl p-6 shadow-xl">

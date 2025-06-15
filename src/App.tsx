@@ -13,6 +13,8 @@ import PhotoGallery from "./pages/PhotoGallery";
 import MediaCoverage from "./pages/MediaCoverage";
 import StudentAchievements from "./pages/StudentAchievements";
 import FacultyResearch from "./pages/FacultyResearch";
+
+import AwardSection from "./pages/AwardSection";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +33,7 @@ const App = () => (
           <Route path="/media-coverage" element={<MediaCoverage />} />
           <Route path="/student-achievements" element={<StudentAchievements />} />
           <Route path="/faculty-research" element={<FacultyResearch />} />
+          <Route path="/awards" element={<AwardSection />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
